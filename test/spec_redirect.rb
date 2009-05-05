@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/helper'
 
-context "RackClient" do
+context "RackClient with a FollowRedirects middleware" do
   specify "follows redirects" do
     client = RackClient.configure do
       use RackClient::FollowRedirects

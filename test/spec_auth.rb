@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/helper'
 
-context "RackClient" do
+context "RackClient with an Auth::Basic middleware" do
   specify "succeeds with authorization" do
     client = RackClient.configure do
       use RackClient::Auth::Basic, "username", "password"
