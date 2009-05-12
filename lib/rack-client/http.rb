@@ -17,6 +17,12 @@ module RackClient
         http.request(get) do |response|
           return parse(response)
         end
+      when "POST"
+        post = Net::HTTP::Post.new(request.path, request_headers)
+        post.body = @env["rack.input"].read
+        http.request(post) do |response|
+          return parse(response)
+        end
       else
         raise "Unsupported method: #{request.request_method.inspect}"
       end

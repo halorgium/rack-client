@@ -16,6 +16,16 @@ class ExampleOrg < Sinatra::Base
   get "/after-redirect" do
     "after redirect"
   end
+
+  post "/posted" do
+    if request.body.read == "some data"
+      status 201
+      response["Created"] = "awesome"
+      ""
+    else
+      raise "Not valid"
+    end
+  end
 end
 
 require 'pp'
@@ -36,6 +46,7 @@ class Debug
   end
 end
 
+use Rack::CommonLogger
 use Debug if ENV["DEBUG"]
 
 map "http://localhost/" do

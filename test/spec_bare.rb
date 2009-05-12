@@ -16,4 +16,12 @@ context "RackClient with middleware" do
     response.status.should.equal 302
     response["Location"].should.equal "/after-redirect"
   end
+
+
+  specify "posts data" do
+    client = RackClient.configure
+    response = client.post("http://localhost:9292/posted", "some data")
+    response.status.should.equal 201
+    response["Created"].should.equal "awesome"
+  end
 end
