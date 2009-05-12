@@ -5,6 +5,7 @@ module RackClient
     def initialize
       @options = {}
       @stack = []
+      @endpoint = HTTP
     end
 
     def use(middleware, *args, &block)
@@ -15,12 +16,16 @@ module RackClient
       @options[:body] = access
     end
 
+    def endpoint(app, url = "http://example.org/")
+      @endpoint = Rack::URLMap.new(url => app)
+    end
+
     def app
       builder = Rack::Builder.new
       @stack.each do |(middleware,args,block)|
         builder.use middleware, *args, &block
       end
-      builder.run HTTP
+      builder.run @endpoint
       builder.to_app
     end
   end
