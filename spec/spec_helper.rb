@@ -1,5 +1,5 @@
-require 'test/spec'
 require 'rubygems'
+require 'spec'
 gem 'rack-test'
 require 'pp'
 

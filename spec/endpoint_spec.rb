@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/helper'
+require File.dirname(__FILE__) + '/spec_helper'
 
 require 'sinatra/base'
 
@@ -14,8 +14,8 @@ context "RackClient with an Rack app endpoint" do
       endpoint MyApp
     end
     response = client.get("http://example.org/awesome")
-    response.status.should.equal 200
-    response.body.should.equal "test"
+    response.status.should == 200
+    response.body.should == "test"
   end
 
   context "with a custom domain" do
@@ -24,8 +24,8 @@ context "RackClient with an Rack app endpoint" do
         endpoint MyApp, "http://google.com/"
       end
       response = client.get("http://google.com/awesome")
-      response.status.should.equal 200
-      response.body.should.equal "test"
+      response.status.should == 200
+      response.body.should == "test"
     end
 
     specify "only functions for that domain" do
@@ -33,7 +33,7 @@ context "RackClient with an Rack app endpoint" do
         endpoint MyApp, "http://google.com/"
       end
       response = client.get("http://example.org/")
-      response.status.should.equal 404
+      response.status.should == 404
     end
   end
 end
