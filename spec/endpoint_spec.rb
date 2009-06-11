@@ -8,9 +8,9 @@ class MyApp < Sinatra::Base
   end
 end
 
-context "RackClient with an Rack app endpoint" do
-  specify "returns the body" do
-    client = RackClient.configure do
+describe Rack::Client, "with an Rack app endpoint" do
+  it "returns the body" do
+    client = Rack::Client.configure do
       endpoint MyApp
     end
     response = client.get("http://example.org/awesome")
@@ -18,9 +18,9 @@ context "RackClient with an Rack app endpoint" do
     response.body.should == "test"
   end
 
-  context "with a custom domain" do
-    specify "returns the body" do
-      client = RackClient.configure do
+  describe "with a custom domain" do
+    it "returns the body" do
+      client = Rack::Client.configure do
         endpoint MyApp, "http://google.com/"
       end
       response = client.get("http://google.com/awesome")
@@ -28,8 +28,8 @@ context "RackClient with an Rack app endpoint" do
       response.body.should == "test"
     end
 
-    specify "only functions for that domain" do
-      client = RackClient.configure do
+    it "only functions for that domain" do
+      client = Rack::Client.configure do
         endpoint MyApp, "http://google.com/"
       end
       response = client.get("http://example.org/")

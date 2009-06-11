@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-context "RackClient with a FollowRedirects middleware" do
-  specify "follows redirects" do
-    client = RackClient.configure do
-      use RackClient::FollowRedirects
+describe Rack::Client, "with a FollowRedirects middleware" do
+  it "follows redirects" do
+    client = Rack::Client.configure do
+      use Rack::Client::FollowRedirects
     end
     response = client.get("http://localhost:9292/redirect")
     response.status.should == 200

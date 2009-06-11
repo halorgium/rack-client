@@ -1,5 +1,4 @@
-module RackClient
-  class FollowRedirects
+class Rack::Client::FollowRedirects
     include Rack::Test::Methods
 
     def initialize(app)
@@ -26,4 +25,3 @@ module RackClient
       end
     end
   end
-end
