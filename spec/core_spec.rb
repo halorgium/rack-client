@@ -23,7 +23,7 @@ describe Rack::Client, "without middleware" do
     end
 
     it "puts data" do
-      response = Rack::Client.new.put "http://localhost:9292/shelf/ctm"
+      response = Rack::Client.new.put "http://localhost:9292/shelf/ctm", "some data"
       response.status.should == 200
       response["Location"].should == "/shelf/ctm"
     end
@@ -62,7 +62,7 @@ describe Rack::Client, "without middleware" do
     end
 
     it "puts data" do
-      response = Rack::Client.put "http://localhost:9292/shelf/ctm"
+      response = Rack::Client.put "http://localhost:9292/shelf/ctm", "some data"
       response.status.should == 200
       response["Location"].should == "/shelf/ctm"      
     end
@@ -104,7 +104,7 @@ describe Rack::Client, "without middleware" do
     end
 
     it "puts data" do
-      put "http://localhost:9292/shelf/ctm"
+      put "http://localhost:9292/shelf/ctm", "some data"
       last_response.status.should == 200
       last_response["Location"].should == "/shelf/ctm"      
     end
