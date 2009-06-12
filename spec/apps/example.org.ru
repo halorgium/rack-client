@@ -17,6 +17,17 @@ class ExampleOrg < Sinatra::Base
     "after redirect"
   end
 
+  put "/shelf/:book" do
+    status 200
+    response["Location"] = "/shelf/#{params[:book]}"
+    ""
+  end
+
+  delete "/shelf/:book" do
+    status 204
+    ""
+  end
+
   post "/posted" do
     if request.body.read == "some data"
       status 201

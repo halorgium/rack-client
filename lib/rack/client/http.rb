@@ -22,6 +22,17 @@ class Rack::Client::HTTP
       http.request(post) do |response|
         return parse(response)
       end
+    when "PUT"
+      put = Net::HTTP::Put.new(request.path, request_headers)
+      put.body = @env["rack.input"].read
+      http.request(put) do |response|
+        return parse(response)
+      end
+    when "DELETE"
+      delete = Net::HTTP::Delete.new(request.path, request_headers)
+      http.request(delete) do |response|
+        return parse(response)
+      end           
     else
       raise "Unsupported method: #{request.request_method.inspect}"
     end
@@ -42,7 +53,7 @@ class Rack::Client::HTTP
       end
       headers[key] = value
     end
-    [status, headers, response.body]
+    [status, headers, response.body.to_s]
   end
 
   def request

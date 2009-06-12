@@ -16,6 +16,17 @@ describe Rack::Client, "without middleware" do
       response["Location"].should == "/after-redirect"
     end
 
+    it "puts data" do
+      response = Rack::Client.new.put "http://localhost:9292/shelf/ctm"
+      response.status.should == 200
+      response["Location"].should == "/shelf/ctm"
+    end
+
+    it "deletes data" do
+      response = Rack::Client.new.delete "http://localhost:9292/shelf/ctm"
+      response.status.should == 204
+    end
+
     it "posts data" do
       response = Rack::Client.new.post("http://localhost:9292/posted", "some data")
       response.status.should == 201
@@ -36,6 +47,17 @@ describe Rack::Client, "without middleware" do
       response = Rack::Client.get("http://localhost:9292/redirect")
       response.status.should == 302
       response["Location"].should == "/after-redirect"
+    end
+
+    it "puts data" do
+      response = Rack::Client.put "http://localhost:9292/shelf/ctm"
+      response.status.should == 200
+      response["Location"].should == "/shelf/ctm"      
+    end
+
+    it "deletes data" do
+      response = Rack::Client.delete "http://localhost:9292/shelf/ctm"
+      response.status.should == 204
     end
 
     it "posts data" do
@@ -61,6 +83,17 @@ describe Rack::Client, "without middleware" do
       get "http://localhost:9292/redirect"
       last_response.status.should == 302
       last_response["Location"].should == "/after-redirect"
+    end
+
+    it "puts data" do
+      put "http://localhost:9292/shelf/ctm"
+      last_response.status.should == 200
+      last_response["Location"].should == "/shelf/ctm"      
+    end
+
+    it "deletes data" do
+      delete "http://localhost:9292/shelf/ctm"
+      last_response.status.should == 204
     end
 
     it "posts data" do
