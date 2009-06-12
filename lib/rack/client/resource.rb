@@ -14,8 +14,9 @@ class Rack::Client::Resource < Rack::Builder
     run Rack::URLMap.new(url => app)
   end
 
-  def app
+  def to_app(*args, &block)
     run Rack::Client::HTTP unless @ran
-    to_app
+    super(*args, &block)
   end
+  alias app to_app
 end 
