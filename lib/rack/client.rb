@@ -24,10 +24,6 @@ module Rack
       super(*args, &block)
     end
 
-    def endpoint(app, url = "http://example.org/")
-      run Rack::URLMap.new(url => app)
-    end
-
     def to_app(*args, &block)
       run Rack::Client::HTTP unless @ran
       super(*args, &block)

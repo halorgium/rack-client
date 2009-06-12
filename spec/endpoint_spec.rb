@@ -11,7 +11,7 @@ end
 describe Rack::Client, "with an Rack app endpoint" do
   it "returns the body" do
     client = Rack::Client.new do
-      endpoint MyApp
+      run Rack::URLMap.new("http://example.org/" => MyApp)
     end
     response = client.get("http://example.org/awesome")
     response.status.should == 200
@@ -21,7 +21,7 @@ describe Rack::Client, "with an Rack app endpoint" do
   describe "with a custom domain" do
     it "returns the body" do
       client = Rack::Client.new do
-        endpoint MyApp, "http://google.com/"
+        run Rack::URLMap.new("http://google.com/" => MyApp)
       end
       response = client.get("http://google.com/awesome")
       response.status.should == 200
@@ -30,7 +30,7 @@ describe Rack::Client, "with an Rack app endpoint" do
 
     it "only functions for that domain" do
       client = Rack::Client.new do
-        endpoint MyApp, "http://google.com/"
+        run Rack::URLMap.new("http://google.com/" => MyApp)        
       end
       response = client.get("http://example.org/")
       response.status.should == 404
