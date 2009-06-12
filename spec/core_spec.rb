@@ -16,6 +16,12 @@ describe Rack::Client, "without middleware" do
       response["Location"].should == "/after-redirect"
     end
 
+    it "heads data" do
+      response = Rack::Client.new.head "http://localhost:9292/shelf"
+      response.status.should == 200
+      response["ETag"].should == "828ef3fdfa96f00ad9f27c383fc9ac7f"
+    end
+
     it "puts data" do
       response = Rack::Client.new.put "http://localhost:9292/shelf/ctm"
       response.status.should == 200
@@ -89,6 +95,12 @@ describe Rack::Client, "without middleware" do
       get "http://localhost:9292/redirect"
       last_response.status.should == 302
       last_response["Location"].should == "/after-redirect"
+    end
+
+    it "heads data" do
+      head "http://localhost:9292/shelf"
+      last_response.status.should == 200
+      last_response["ETag"].should == "828ef3fdfa96f00ad9f27c383fc9ac7f"
     end
 
     it "puts data" do
