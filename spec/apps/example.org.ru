@@ -17,8 +17,12 @@ class ExampleOrg < Sinatra::Base
     "after redirect"
   end
 
+  head "/shelf" do
+    response["ETag"] = "828ef3fdfa96f00ad9f27c383fc9ac7f"
+    ""
+  end
+
   put "/shelf/:book" do
-    status 200
     response["Location"] = "/shelf/#{params[:book]}"
     ""
   end

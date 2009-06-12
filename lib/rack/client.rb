@@ -14,9 +14,10 @@ module Rack
       super(*args, &block)
     end
 
+    HTTP_METHODS = [:head, :get, :put, :post, :delete]
     class << self
       extend Forwardable
-      def_delegators :new, *Rack::Test::Methods::METHODS
+      def_delegators :new, *HTTP_METHODS
     end
 
     def run(*args, &block)

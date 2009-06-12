@@ -11,6 +11,11 @@ class Rack::Client::HTTP
 
   def run
     case request.request_method
+    when "HEAD"
+      head = Net::HTTP::Head.new(request.path, request_headers)
+      http.request(head) do |response|
+        return parse(response)
+      end      
     when "GET"
       get = Net::HTTP::Get.new(request.path, request_headers)
       http.request(get) do |response|
