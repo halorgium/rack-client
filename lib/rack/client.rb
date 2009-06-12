@@ -15,9 +15,7 @@ module Rack::Client
   end
   
   def self.resource(&block)
-    result = Rack::Client::Resource.new
-    result.instance_eval(&block) if block_given?
-    result
+    Rack::Client::Resource.new(&block)
   end
 end
 

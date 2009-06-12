@@ -1,18 +1,9 @@
-class Rack::Client::Resource
+class Rack::Client::Resource < Rack::Builder
   include Rack::Test::Methods
 
-  def initialize
-    @options = {}
-    @stack = []
+  def initialize(*args, &block)
     @endpoint = Rack::Client::HTTP
-  end
-
-  def use(middleware, *args, &block)
-    @stack << [middleware, args, block]
-  end
-
-  def body(access)
-    @options[:body] = access
+    super(*args, &block)
   end
 
   def endpoint(app, url = "http://example.org/")
@@ -20,11 +11,7 @@ class Rack::Client::Resource
   end
 
   def app
-    builder = Rack::Builder.new
-    @stack.each do |(middleware,args,block)|
-      builder.use middleware, *args, &block
-    end
-    builder.run @endpoint
-    builder.to_app
+    run @endpoint
+    to_app
   end
 end 
