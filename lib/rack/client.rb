@@ -4,24 +4,40 @@ end
 
 require 'rack'
 require 'rack/test'
+require 'forwardable'
 
-module Rack::Client
-  Rack::Test::Methods::METHODS.each do |method_name|
-    instance_eval <<-RUBY
-      def #{method_name}(*args, &block)
-        resource.#{method_name}(*args, &block)
-      end
-    RUBY
-  end
-  
-  def self.resource(&block)
-    Rack::Client::Resource.new(&block)
+module Rack
+  class Client < Rack::Builder
+    include Rack::Test::Methods
+    def initialize(*args, &block)
+      @ran = false
+      super(*args, &block)
+    end
+
+    class << self
+      extend Forwardable
+      def_delegators :new, *Rack::Test::Methods::METHODS
+    end
+
+    def run(*args, &block)
+      @ran = true
+      super(*args, &block)
+    end
+
+    def endpoint(app, url = "http://example.org/")
+      run Rack::URLMap.new(url => app)
+    end
+
+    def to_app(*args, &block)
+      run Rack::Client::HTTP unless @ran
+      super(*args, &block)
+    end
+    alias app to_app
   end
 end
 
 $:.unshift File.dirname(__FILE__)
 
 require 'client/http'
-require 'client/resource'
 require 'client/auth'
 require 'client/follow_redirects'
