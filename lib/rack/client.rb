@@ -6,16 +6,24 @@ require 'rack'
 require 'rack/test'
 
 module Rack::Client
-  def self.configure(&block)
-    stack = Rack::Client::Stack.new
-    stack.instance_eval(&block) if block_given?
-    stack
+  Rack::Test::Methods::METHODS.each do |method_name|
+    instance_eval <<-RUBY
+      def #{method_name}(*args, &block)
+        resource.#{method_name}(*args, &block)
+      end
+    RUBY
+  end
+  
+  def self.resource(&block)
+    result = Rack::Client::Resource.new
+    result.instance_eval(&block) if block_given?
+    result
   end
 end
 
 $:.unshift File.dirname(__FILE__)
 
 require 'client/http'
-require 'client/stack'
+require 'client/resource'
 require 'client/auth'
 require 'client/follow_redirects'

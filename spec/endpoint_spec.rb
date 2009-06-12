@@ -10,7 +10,7 @@ end
 
 describe Rack::Client, "with an Rack app endpoint" do
   it "returns the body" do
-    client = Rack::Client.configure do
+    client = Rack::Client.resource do
       endpoint MyApp
     end
     response = client.get("http://example.org/awesome")
@@ -20,7 +20,7 @@ describe Rack::Client, "with an Rack app endpoint" do
 
   describe "with a custom domain" do
     it "returns the body" do
-      client = Rack::Client.configure do
+      client = Rack::Client.resource do
         endpoint MyApp, "http://google.com/"
       end
       response = client.get("http://google.com/awesome")
@@ -29,7 +29,7 @@ describe Rack::Client, "with an Rack app endpoint" do
     end
 
     it "only functions for that domain" do
-      client = Rack::Client.configure do
+      client = Rack::Client.resource do
         endpoint MyApp, "http://google.com/"
       end
       response = client.get("http://example.org/")

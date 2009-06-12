@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Rack::Client, "with an Auth::Basic middleware" do
   it "succeeds with authorization" do
-    client = Rack::Client.configure do
+    client = Rack::Client.resource do
       use Rack::Client::Auth::Basic, "username", "password"
     end
     response = client.get("http://localhost:9292/auth/ping")
@@ -12,7 +12,7 @@ describe Rack::Client, "with an Auth::Basic middleware" do
   end
 
   it "fails with authorization" do
-    client = Rack::Client.configure do
+    client = Rack::Client.resource do
       use Rack::Client::Auth::Basic, "username", "fail"
     end
     response = client.get("http://localhost:9292/auth/ping")

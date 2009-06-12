@@ -1,4 +1,4 @@
-class Rack::Client::Stack
+class Rack::Client::Resource
   include Rack::Test::Methods
 
   def initialize
