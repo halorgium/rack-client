@@ -41,6 +41,10 @@ class ExampleOrg < Sinatra::Base
       raise "Not valid"
     end
   end
+
+  get "/no-etag" do
+    ""
+  end
 end
 
 require 'pp'

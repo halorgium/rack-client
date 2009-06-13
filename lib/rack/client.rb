@@ -9,12 +9,8 @@ require 'forwardable'
 module Rack
   class Client < Rack::Builder
     include Rack::Test::Methods
-    def initialize(*args, &block)
-      @ran = false
-      super(*args, &block)
-    end
-
     HTTP_METHODS = [:head, :get, :put, :post, :delete]
+    
     class << self
       extend Forwardable
       def_delegators :new, *HTTP_METHODS
