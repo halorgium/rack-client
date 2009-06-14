@@ -3,6 +3,13 @@ h1. What's this?
 Rack::Client is an HTTP client that aims to be a good Rack
 citizen.
 
+h1. Install
+
+To install the latest release as a gem:
+<pre>sudo gem install rack-client</pre>
+Then in Ruby:
+<pre>require "rubygems"; require "rack/client" # and you're off!</pre>
+
 h2. Rack responses
 
 Rack::Client can be used to make HTTP requests to any type of server, not
