@@ -1,0 +1,68 @@
+h1. What's this?
+
+Rack::Client is an HTTP client that aims to be a good Rack
+citizen.
+
+h1. Features
+
+h2. Rack responses
+
+Rack::Client can be used to make HTTP requests to any type of server, not
+just ones using Rack. However, when a request is made then a proper
+Rack response (specifically a Rack::MockResponse) object is returned. 
+For Rubyists, this means you don't need to learn yet another interface 
+and can just stick with Rack both on the server, test, and client side of
+things.
+
+h3. Examples:
+<pre>
+response = Rack::Client.get("http://some-website.com/blah.txt")
+response.code #=> 200
+response.body #=> "some body"
+</pre>
+
+h2. Middleware
+
+Rack::Client is actually a subclass of Rack::Builder. This means that
+Rack::Client objects yield actual Rack apps. More importantly, this
+means you can reuse existing Rack middleware on the client side too
+(but also feel free to make new middleware that only makes sense on
+the client side under the Rack::Client namespace). Note that by default
+Rack::Client will "run" Rack::Client::HTTP as an endpoint, but this
+will not be performed if you specify your own "run" endpoint.
+
+h3. Examples:
+<pre>
+client = Rack::Client.new { use Rack::ETag }
+response = client.get("http://localhost:9292/no-etag")
+</pre>
+
+h2. Rack::Test compatibility
+
+Rack::Client reuses a lot of Rack::Test to provide users with a
+familiar interface. What's even cooler is that you can use a
+Rack::Client object as your "app" in Rack::Test. This means that you
+can test-drive an application with Rack::Test, then when ready
+actually run your Rack app, switch your Rack::Test "app" to a
+Rack::Client, and get free full-blown integration testing! Note that
+the integration-tested server does not need to be all-Rack, so you can
+develop quickly with middleware like Rack::Cache but then remove it
+and integration test with a dedicated cache server like Varnish.
+
+h3. Examples:
+<pre>
+# NOTE: For a complete example, look in the "demo" directory
+describe Demo, "/store resource" do
+  include Rack::Test::Methods
+  def app
+    # replace this with Rack::Client.new
+    # for integration testing
+    Demo::App.new
+  end
+  # ... etc
+end
+</pre>
+
+h1. Contributors
+
+halorgium, larrytheliquid
