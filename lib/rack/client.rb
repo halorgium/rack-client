@@ -8,6 +8,7 @@ require 'forwardable'
 
 module Rack
   class Client < Rack::Builder
+    VERSION = "0.1.0"
     include Rack::Test::Methods
     HTTP_METHODS = [:head, :get, :put, :post, :delete]
     

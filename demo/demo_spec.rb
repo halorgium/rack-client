@@ -1,4 +1,4 @@
-require "demo"
+require File.expand_path(File.dirname(__FILE__) + "/demo")
 require "rubygems"
 require "spec"
 require "rack"
