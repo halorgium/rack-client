@@ -22,6 +22,9 @@ spec = Gem::Specification.new do |s|
   s.description       = s.summary
   s.files             = %w[History.txt LICENSE README.textile Rakefile] + Dir["lib/**/*"] + Dir["demo/**/*"]
   s.test_files        = Dir["spec/**/*"]
+
+  s.add_dependency 'rack',      '~> 1'  # 1.X.X
+  s.add_dependency 'rack-test', '~> 0'  # 0.X.X
 end
 
 Rake::GemPackageTask.new(spec) do |package|
