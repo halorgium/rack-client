@@ -1,7 +1,3 @@
-unless $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__) + "/.."))
-  $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/.."))
-end
-
 require 'rack'
 require 'rack/test'
 require 'forwardable'
@@ -9,6 +5,7 @@ require 'forwardable'
 module Rack
   class Client < Rack::Builder
     VERSION = "0.1.1"
+
     include Rack::Test::Methods
     HTTP_METHODS = [:head, :get, :put, :post, :delete]
 
@@ -30,8 +27,8 @@ module Rack
   end
 end
 
-$:.unshift File.dirname(__FILE__)
+current_dir = File.expand_path(File.dirname(__FILE__) + '/client')
 
-require 'client/http'
-require 'client/auth'
-require 'client/follow_redirects'
+require current_dir + '/http'
+require current_dir + '/auth'
+require current_dir + '/follow_redirects'
