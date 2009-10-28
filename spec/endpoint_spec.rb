@@ -30,7 +30,7 @@ describe Rack::Client, "with an Rack app endpoint" do
 
     it "only functions for that domain" do
       client = Rack::Client.new do
-        run Rack::URLMap.new("http://google.com/" => MyApp)        
+        run Rack::URLMap.new("http://google.com/" => MyApp)
       end
       response = client.get("http://example.org/")
       response.status.should == 404

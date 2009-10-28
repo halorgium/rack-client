@@ -12,7 +12,7 @@ describe Demo, "/store resource" do
     Rack::Client.new
     # Demo::App.new
   end
-  before(:all) { delete "http://localhost:9292/store" }  
+  before(:all) { delete "http://localhost:9292/store" }
   after { delete "http://localhost:9292/store" }
 
   it "should return a 404 if a resource does not exist" do
@@ -28,8 +28,8 @@ describe Demo, "/store resource" do
     last_response.status.should == 200
     last_response.body.should == "strawberry"
     get "http://localhost:9292/store/car"
-    last_response.status.should == 200    
-    last_response.body.should == "lotus"        
+    last_response.status.should == 200
+    last_response.body.should == "lotus"
   end
 
   it "should be able to clear the store of all items" do

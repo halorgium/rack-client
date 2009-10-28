@@ -13,7 +13,7 @@ task :default  => :spec
 
 spec = Gem::Specification.new do |s|
   s.name              = "rack-client"
-  s.rubyforge_project = s.name  
+  s.rubyforge_project = s.name
   s.version           = Rack::Client::VERSION
   s.author            = "Tim Carey-Smith"
   s.email             = "tim" + "@" + "spork.in"
@@ -23,8 +23,12 @@ spec = Gem::Specification.new do |s|
   s.files             = %w[History.txt LICENSE README.textile Rakefile] + Dir["lib/**/*"] + Dir["demo/**/*"]
   s.test_files        = Dir["spec/**/*"]
 
-  s.add_dependency 'rack',      '~> 1'  # 1.X.X
-  s.add_dependency 'rack-test', '~> 0'  # 0.X.X
+  require 'bundler'
+  manifest = Bundler::Environment.load(File.dirname(__FILE__) + '/Gemfile')
+  manifest.dependencies.each do |d|
+    next if d.only && d.only.include?('test')
+    s.add_dependency(d.name, d.version)
+  end
 end
 
 Rake::GemPackageTask.new(spec) do |package|

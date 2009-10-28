@@ -5,7 +5,7 @@ describe Rack::Client, "with an Auth::Basic middleware" do
     client = Rack::Client.new do
       use Rack::Client::Auth::Basic, "username", "password"
     end
-    response = client.get("http://localhost:9292/auth/ping")
+    response = client.get("http://localhost:9292/auth/ping") #, :username => "username")
     response.status.should == 200
     response.headers["Content-Type"].should == "text/html"
     response.body.should == "pong"

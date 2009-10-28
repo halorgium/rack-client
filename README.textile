@@ -14,8 +14,8 @@ h2. Rack responses
 
 Rack::Client can be used to make HTTP requests to any type of server, not
 just ones using Rack. However, when a request is made then a proper
-Rack response (specifically a Rack::MockResponse) object is returned. 
-For Rubyists, this means you don't need to learn yet another interface 
+Rack response (specifically a Rack::MockResponse) object is returned.
+For Rubyists, this means you don't need to learn yet another interface
 and can just stick with Rack both on the server, test, and client side of
 things.
 

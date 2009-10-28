@@ -15,7 +15,7 @@ class Rack::Client::HTTP
       head = Net::HTTP::Head.new(request.path, request_headers)
       http.request(head) do |response|
         return parse(response)
-      end      
+      end
     when "GET"
       get = Net::HTTP::Get.new(request.path, request_headers)
       http.request(get) do |response|
@@ -37,7 +37,7 @@ class Rack::Client::HTTP
       delete = Net::HTTP::Delete.new(request.path, request_headers)
       http.request(delete) do |response|
         return parse(response)
-      end           
+      end
     else
       raise "Unsupported method: #{request.request_method.inspect}"
     end
