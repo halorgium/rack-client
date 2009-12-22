@@ -1,4 +1,4 @@
-require 'net/http'
+require 'net/https'
 
 class Rack::Client::HTTP
   def self.call(env)
@@ -43,8 +43,17 @@ class Rack::Client::HTTP
     end
   end
 
+  def https?
+    request.scheme == 'https'
+  end
+
   def http
-    Net::HTTP.new(request.host, request.port)
+    http = Net::HTTP.new(request.host, request.port)
+    if https?
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+    http
   end
 
   def parse(response)

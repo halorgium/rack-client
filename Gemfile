@@ -1,8 +1,8 @@
-source "http://gemcutter.org"
-
-gem 'rack'
-gem 'rack-test'
-gem 'halorgium-actionpack', '=3.0.pre'
+only :release do
+  gem 'rack'
+  gem 'rack-test'
+  gem 'halorgium-actionpack', '=3.0.pre'
+end
 
 only :test do
   gem 'rake'
@@ -11,6 +11,7 @@ only :test do
   gem 'rack-contrib', :require_as => 'rack/contrib'
   gem 'ruby-debug'
   gem 'bundler'
+  gem 'webrat'
 end
 
 disable_system_gems
