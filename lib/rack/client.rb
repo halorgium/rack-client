@@ -8,7 +8,7 @@ require 'active_support/core_ext/string/inflections'
 
 module Rack
   class Client
-    VERSION = "0.2.2.pre"
+    VERSION = "0.2.3.pre"
 
     include Rack::Test::Methods
     HTTP_METHODS = [:head, :get, :put, :post, :delete]
