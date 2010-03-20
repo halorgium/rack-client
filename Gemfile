@@ -8,6 +8,7 @@ only :test do
   gem 'rack-contrib', :require_as => 'rack/contrib'
   gem 'ruby-debug'
   gem 'bundler'
+  gem 'mongrel'
 end
 
 disable_system_gems

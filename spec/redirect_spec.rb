@@ -5,7 +5,7 @@ describe Rack::Client, "with a FollowRedirects middleware" do
     client = Rack::Client.new do
       use Rack::Client::FollowRedirects
     end
-    response = client.get("http://localhost:9292/redirect")
+    response = client.get("http://localhost:#{@server.port}/redirect")
     response.status.should == 200
     response.body.should == "after redirect"
   end
