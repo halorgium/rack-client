@@ -9,4 +9,6 @@ Spec::Runner.configure do |config|
   def server
     @@server ||= InThreadServer.rackup(File.expand_path(File.dirname(__FILE__) + '/apps/example.org.ru'))
   end
+
+  def finish() end
 end

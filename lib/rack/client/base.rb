@@ -10,27 +10,27 @@ module Rack
         @base_uri = URI.parse(url) unless url.nil?
       end
 
-      def delete(url, params = {}, headers = {}, body = [], &block)
-        call(build_env('DELETE', url, params, headers, body), &block)
+      def delete(url,  headers = {}, body = [], &block)
+        call(build_env('DELETE', url, headers, body), &block)
       end
 
-      def get(url, params = {}, headers = {}, body = [], &block)
-        call(build_env('GET', url, params, headers, body), &block)
+      def get(url,  headers = {}, body = [], &block)
+        call(build_env('GET', url, headers, body), &block)
       end
 
-      def head(url, params = {}, headers = {}, body = [], &block)
-        call(build_env('HEAD', url, params, headers, body), &block)
+      def head(url,  headers = {}, body = [], &block)
+        call(build_env('HEAD', url, headers, body), &block)
       end
 
-      def post(url, params = {}, headers = {}, body = [], &block)
-        call(build_env('POST', url, params, headers, body), &block)
+      def post(url,  headers = {}, body = [], &block)
+        call(build_env('POST', url, headers, body), &block)
       end
 
-      def put(url, params = {}, headers = {}, body = [], &block)
-        call(build_env('PUT', url, params, headers, body), &block)
+      def put(url,  headers = {}, body = [], &block)
+        call(build_env('PUT', url, headers, body), &block)
       end
 
-      def build_env(request_method, url, params = {}, headers = {}, body = [])
+      def build_env(request_method, url,  headers = {}, body = [])
         env = {}
         env.update 'REQUEST_METHOD' => request_method
         env.update 'CONTENT_TYPE'   => 'application/x-www-form-urlencoded'

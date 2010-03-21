@@ -5,7 +5,7 @@ module Rack
     module Handler
       class Excon
         def initialize(url)
-          @url = URI.parse(url)
+          @uri = URI.parse(url)
         end
 
         def call(env, &block)
@@ -36,7 +36,7 @@ module Rack
         end
 
         def connection
-          connection_table[self] ||= ::Excon.new(@url.to_s)
+          connection_table[self] ||= ::Excon.new(@uri.to_s)
         end
 
         def connection_table

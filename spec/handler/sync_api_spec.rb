@@ -39,7 +39,7 @@ share_examples_for "Synchronous Request API" do
 
   context 'POST request' do
     it 'can send a request body' do
-      response = client.post("/posted", {}, {}, "some data")
+      response = client.post("/posted", {}, "some data")
       response.status.should == 201
       response["Created"].should == "awesome"
     end
@@ -47,7 +47,7 @@ share_examples_for "Synchronous Request API" do
 
   context 'PUT request' do
     it 'can send a request body' do
-      response = client.put("/shelf/ctm", {}, {}, "some data")
+      response = client.put("/shelf/ctm", {}, "some data")
       response.status.should == 200
       response["Location"].should == "/shelf/ctm"
     end

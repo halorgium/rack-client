@@ -9,6 +9,8 @@ only :test do
   gem 'bundler'
   gem 'mongrel'
   gem 'excon'
+  gem 'em-http-request'
+  gem 'em-spec', '0.2.0.hedgehog', :require_as => 'em-spec/rspec'
 end
 
 disable_system_gems
