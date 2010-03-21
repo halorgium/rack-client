@@ -9,6 +9,7 @@ module Rack
 
           klass = case request.request_method
                   when 'GET'  then Net::HTTP::Get
+                  when 'HEAD' then Net::HTTP::Head
                   end
 
           perform(klass, request)
@@ -17,8 +18,8 @@ module Rack
         def self.perform(klass, request)
           http = Net::HTTP.new(request.host, request.port)
 
-          http.request(klass.new(request.path, headers(request.env))) do |response|
-            return parse(response)
+          http.request(klass.new(request.path, headers(request.env))) do |net_response|
+            return parse(net_response)
           end
         end
 
@@ -28,8 +29,24 @@ module Rack
           end
         end
 
-        def self.parse(response)
-          Rack::Response.new(response.body || [], response.code.to_i)
+        def self.parse(net_response)
+          Rack::Response.new(net_response.body || [], net_response.code.to_i, parse_headers(net_response))
+        end
+
+        def self.parse_headers(net_response)
+          headers = {}
+          net_response.each do |(k,v)|
+            headers.update(clean_header(k) => v)
+          end
+          headers
+        end
+
+        def self.clean_header(header)
+          header.gsub(/(\w+)/) do |matches|
+            matches.sub(/^./) do |char|
+              char.upcase
+            end
+          end
         end
       end
     end
