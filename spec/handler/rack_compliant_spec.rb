@@ -1,6 +1,13 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 share_examples_for "Rack Compliant Adapter" do
+  context 'DELETE request' do
+    it 'can handle a No Content response' do
+      response = client.delete("/shelf/ctm")
+      response.status.should == 204
+    end
+  end
+
   context 'GET request' do
     it 'has the proper response for a basic request' do
       response = client.get("/ping")
@@ -22,6 +29,14 @@ share_examples_for "Rack Compliant Adapter" do
       response = client.head("/shelf")
       response.status.should == 200
       response["ETag"].should == "828ef3fdfa96f00ad9f27c383fc9ac7f"
+    end
+  end
+
+  context 'POST request' do
+    it 'can send a request body' do
+      response = client.post("/posted", {}, {}, "some data")
+      response.status.should == 201
+      response["Created"].should == "awesome"
     end
   end
 

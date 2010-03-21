@@ -9,12 +9,20 @@ module Rack
         @app, @base_uri = app, URI.parse(url.to_s)
       end
 
+      def delete(url, params = {}, headers = {}, body = [])
+        call(build_env('DELETE', url, params, headers, body))
+      end
+
       def get(url, params = {}, headers = {}, body = [])
         call(build_env('GET', url, params, headers, body))
       end
 
       def head(url, params = {}, headers = {}, body = [])
         call(build_env('HEAD', url, params, headers, body))
+      end
+
+      def post(url, params = {}, headers = {}, body = [])
+        call(build_env('POST', url, params, headers, body))
       end
 
       def put(url, params = {}, headers = {}, body = [])
@@ -31,6 +39,14 @@ module Rack
         env.update 'REQUEST_URI' => uri.path
         env.update 'SERVER_NAME' => uri.host
         env.update 'SERVER_PORT' => uri.port
+
+        unless body.nil? || body.empty?
+          input = case body
+                  when String     then StringIO.new(body)
+                  when Array, IO  then body
+                  end
+          env.update 'rack.input' => input
+        end
 
         env
       end

@@ -8,9 +8,11 @@ module Rack
           request = Rack::Request.new(env)
 
           klass = case request.request_method
-                  when 'GET'  then Net::HTTP::Get
-                  when 'HEAD' then Net::HTTP::Head
-                  when 'PUT'  then Net::HTTP::Put
+                  when 'DELETE' then Net::HTTP::Delete
+                  when 'GET'    then Net::HTTP::Get
+                  when 'HEAD'   then Net::HTTP::Head
+                  when 'POST'   then Net::HTTP::Post
+                  when 'PUT'    then Net::HTTP::Put
                   end
 
           perform(klass, request)
@@ -19,7 +21,14 @@ module Rack
         def self.perform(klass, request)
           http = Net::HTTP.new(request.host, request.port)
 
-          http.request(klass.new(request.path, headers(request.env))) do |net_response|
+          body = case request.body
+                 when StringIO then request.body.string
+                 when IO       then request.body.read
+                 when Array    then request.body.to_s
+                 when String   then request.body
+                 end
+
+          http.request(klass.new(request.path, headers(request.env)), body) do |net_response|
             return parse(net_response)
           end
         end
