@@ -8,7 +8,7 @@ module Rack
           @url = URI.parse(url)
         end
 
-        def call(env)
+        def call(env, &block)
           request = Rack::Request.new(env)
 
           body = case request.body
@@ -18,10 +18,16 @@ module Rack
                  when String   then request.body
                  end
 
-          parse connection.request(:method => request.request_method,
+          response = parse(connection.request(:method => request.request_method,
                              :path  => request.path,
-                             :body  => body)
+                             :body  => body))
 
+          if block_given?
+            yield response
+            nil
+          else
+            return response
+          end
         end
 
         def parse(excon_response)

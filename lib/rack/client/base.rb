@@ -10,24 +10,24 @@ module Rack
         @base_uri = URI.parse(url) unless url.nil?
       end
 
-      def delete(url, params = {}, headers = {}, body = [])
-        call(build_env('DELETE', url, params, headers, body))
+      def delete(url, params = {}, headers = {}, body = [], &block)
+        call(build_env('DELETE', url, params, headers, body), &block)
       end
 
-      def get(url, params = {}, headers = {}, body = [])
-        call(build_env('GET', url, params, headers, body))
+      def get(url, params = {}, headers = {}, body = [], &block)
+        call(build_env('GET', url, params, headers, body), &block)
       end
 
-      def head(url, params = {}, headers = {}, body = [])
-        call(build_env('HEAD', url, params, headers, body))
+      def head(url, params = {}, headers = {}, body = [], &block)
+        call(build_env('HEAD', url, params, headers, body), &block)
       end
 
-      def post(url, params = {}, headers = {}, body = [])
-        call(build_env('POST', url, params, headers, body))
+      def post(url, params = {}, headers = {}, body = [], &block)
+        call(build_env('POST', url, params, headers, body), &block)
       end
 
-      def put(url, params = {}, headers = {}, body = [])
-        call(build_env('PUT', url, params, headers, body))
+      def put(url, params = {}, headers = {}, body = [], &block)
+        call(build_env('PUT', url, params, headers, body), &block)
       end
 
       def build_env(request_method, url, params = {}, headers = {}, body = [])

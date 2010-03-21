@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-share_examples_for "Rack Compliant Adapter" do
+share_examples_for "Synchronous Request API" do
   context 'DELETE request' do
     it 'can handle a No Content response' do
       response = client.delete("/shelf/ctm")

@@ -4,7 +4,7 @@ module Rack
   module Client
     module Handler
       class NetHTTP
-        def self.call(env)
+        def self.call(env, &block)
           request = Rack::Request.new(env)
 
           klass = case request.request_method
@@ -15,7 +15,7 @@ module Rack
                   when 'PUT'    then Net::HTTP::Put
                   end
 
-          perform(klass, request)
+          perform(klass, request, &block)
         end
 
         def self.perform(klass, request)
@@ -29,7 +29,12 @@ module Rack
                  end
 
           http.request(klass.new(request.path, headers(request.env)), body) do |net_response|
-            return parse(net_response)
+            if block_given?
+              yield parse(net_response)
+              nil
+            else
+              return parse(net_response)
+            end
           end
         end
 
