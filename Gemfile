@@ -1,5 +1,4 @@
 gem 'rack'
-gem 'rack-test'
 
 only :test do
   gem 'rake'
