@@ -4,16 +4,10 @@ module Rack
   module Client
     module Handler
       class Typhoeus
+        include Rack::Client::Handler::DualBand
+
         def initialize(url, hydra = Typhoeus::Hydra.new)
           @uri, @hydra = URI.parse(url), hydra
-        end
-
-        def call(env, &b)
-          if block_given?
-            async_call(env, &b)
-          else
-            sync_call(env)
-          end
         end
 
         def async_call(env)
