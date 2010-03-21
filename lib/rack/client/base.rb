@@ -17,6 +17,10 @@ module Rack
         call(build_env('HEAD', url, params, headers, body))
       end
 
+      def put(url, params = {}, headers = {}, body = [])
+        call(build_env('PUT', url, params, headers, body))
+      end
+
       def build_env(request_method, url, params = {}, headers = {}, body = [])
         env = {}
         env.update 'REQUEST_METHOD' => request_method

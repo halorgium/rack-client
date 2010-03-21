@@ -24,4 +24,12 @@ share_examples_for "Rack Compliant Adapter" do
       response["ETag"].should == "828ef3fdfa96f00ad9f27c383fc9ac7f"
     end
   end
+
+  context 'PUT request' do
+    it 'can send a request body' do
+      response = client.put("/shelf/ctm", {}, {}, "some data")
+      response.status.should == 200
+      response["Location"].should == "/shelf/ctm"
+    end
+  end
 end

@@ -10,6 +10,7 @@ module Rack
           klass = case request.request_method
                   when 'GET'  then Net::HTTP::Get
                   when 'HEAD' then Net::HTTP::Head
+                  when 'PUT'  then Net::HTTP::Put
                   end
 
           perform(klass, request)
