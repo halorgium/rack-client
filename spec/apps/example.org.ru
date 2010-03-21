@@ -23,8 +23,12 @@ class ExampleOrg < Sinatra::Base
   end
 
   put "/shelf/:book" do
-    response["Location"] = "/shelf/#{params[:book]}"
-    ""
+    if request.body.read == "some data"
+      response["Location"] = "/shelf/#{params[:book]}"
+      ""
+    else
+      raise "Not valid"
+    end
   end
 
   delete "/shelf/:book" do

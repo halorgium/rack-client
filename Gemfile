@@ -11,6 +11,7 @@ only :test do
   gem 'excon'
   gem 'em-http-request'
   gem 'em-spec', '0.2.0.hedgehog', :require_as => 'em-spec/rspec'
+  gem 'typhoeus'
 end
 
 disable_system_gems
