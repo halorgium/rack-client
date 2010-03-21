@@ -21,3 +21,6 @@ end
 
 require 'rack/client/base'
 require 'rack/client/handler'
+
+require 'rack/client/follow_redirects'
+require 'rack/client/auth/basic'
