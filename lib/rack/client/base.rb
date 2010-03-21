@@ -5,8 +5,9 @@ module Rack
 
       def_delegator :@app, :call
 
-      def initialize(app, url = '')
-        @app, @base_uri = app, URI.parse(url.to_s)
+      def initialize(app, url = nil)
+        @app = app
+        @base_uri = URI.parse(url) unless url.nil?
       end
 
       def delete(url, params = {}, headers = {}, body = [])
@@ -34,7 +35,7 @@ module Rack
         env.update 'REQUEST_METHOD' => request_method
         env.update 'CONTENT_TYPE'   => 'application/x-www-form-urlencoded'
 
-        uri = @base_uri + url
+        uri = @base_uri.nil? ? URI.parse(url) : @base_uri + url
         env.update 'PATH_INFO'   => uri.path
         env.update 'REQUEST_URI' => uri.path
         env.update 'SERVER_NAME' => uri.host

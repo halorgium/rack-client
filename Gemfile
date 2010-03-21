@@ -8,6 +8,7 @@ only :test do
   gem 'ruby-debug'
   gem 'bundler'
   gem 'mongrel'
+  gem 'excon'
 end
 
 disable_system_gems
