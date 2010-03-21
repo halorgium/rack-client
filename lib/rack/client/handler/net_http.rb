@@ -40,7 +40,8 @@ module Rack
         end
 
         def self.parse(net_response)
-          Rack::Response.new(net_response.body || [], net_response.code.to_i, parse_headers(net_response))
+          body = (net_response.body.nil? || net_response.body.empty?) ? [] : StringIO.new(net_response.body)
+          Rack::Response.new(body, net_response.code.to_i, parse_headers(net_response))
         end
 
         def self.parse_headers(net_response)

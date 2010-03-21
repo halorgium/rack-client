@@ -22,6 +22,11 @@ share_examples_for "Rack Compliant Adapter" do
       response.status.should == 302
       response["Location"].should == "/after-redirect"
     end
+
+    it 'can return an empty body' do
+      response = client.get("/empty")
+      response.body.should be_empty
+    end
   end
 
   context 'HEAD request' do
