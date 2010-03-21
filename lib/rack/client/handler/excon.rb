@@ -32,7 +32,7 @@ module Rack
 
         def parse(excon_response)
           body = excon_response.body.empty? ? [] : StringIO.new(excon_response.body)
-          Rack::Response.new(body, excon_response.status, excon_response.headers)
+          Rack::Response.new(body, excon_response.status, excon_response.headers).finish
         end
 
         def connection

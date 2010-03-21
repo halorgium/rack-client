@@ -47,7 +47,7 @@ module Rack
 
         def parse(em_http)
           body = em_http.response.empty? ? [] : StringIO.new(em_http.response)
-          Rack::Response.new(body, em_http.response_header.status, normalize_headers(em_http))
+          Rack::Response.new(body, em_http.response_header.status, normalize_headers(em_http)).finish
         end
 
         def normalize_headers(em_http)

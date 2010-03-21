@@ -14,17 +14,19 @@ module Rack
       end
 
       def async(env, &block)
-        @app.call(env) do |response|
+        @app.call(env) do |tuple|
+          response = parse(*tuple)
+
           if response.redirect?
             follow_redirect(response, env, &block)
           else
-            yield response
+            yield response.finish
           end
         end
       end
 
       def sync(env, &block)
-        response = @app.call(env)
+        response = parse(*@app.call(env))
         response.redirect? ? follow_redirect(response, env, &block) : response
       end
 
@@ -39,6 +41,10 @@ module Rack
         env.update 'REQUEST_METHOD' => 'GET'
 
         env
+      end
+
+      def parse(status, headers = {}, body = [])
+        Rack::Response.new(body, status, headers)
       end
     end
   end
