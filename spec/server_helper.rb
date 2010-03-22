@@ -63,3 +63,10 @@ class InThreadServer
     end
   end
 end
+
+class DigestServer < Rack::Auth::Digest::MD5
+  def initialize(*)
+    super
+    self.opaque = '12345'
+  end
+end

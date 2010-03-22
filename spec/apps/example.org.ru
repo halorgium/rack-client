@@ -73,9 +73,16 @@ use Rack::CommonLogger
 use Debug if ENV["DEBUG"]
 
 map "http://localhost/" do
-  map "/auth/" do
+  map "/auth/basic/" do
     use Rack::Auth::Basic do |username,password|
       username == "username" && password == "password"
+    end
+    run ExampleOrg
+  end
+
+  map "/auth/digest/" do
+    use DigestServer, 'My Realm' do |username|
+      {"username" => "password"}[username]
     end
     run ExampleOrg
   end

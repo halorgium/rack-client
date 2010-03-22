@@ -4,14 +4,17 @@ module Rack
   module Client
     module Handler
       class EmHttp
+        include Rack::Client::Handler::DualBand
 
         def initialize(url)
           @uri = URI.parse(url)
         end
 
-        def call(env)
+        def sync_call(env)
           raise("Synchronous API is not supported for EmHttp Handler") unless block_given?
+        end
 
+        def async_call(env)
           request = Rack::Request.new(env)
 
           EM.schedule do

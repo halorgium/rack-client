@@ -11,7 +11,7 @@ describe Rack::Client::Auth::Basic do
       end
 
       it "succeeds with authorization" do
-        response = client.get("http://localhost:#{server.port}/auth/ping")
+        response = client.get("http://localhost:#{server.port}/auth/basic/ping")
         response.status.should == 200
         response.headers["Content-Type"].should == "text/html"
         response.body.to_s.should == "pong"
@@ -26,7 +26,7 @@ describe Rack::Client::Auth::Basic do
       end
 
       it "fails with authorization" do
-        response = client.get("http://localhost:#{server.port}/auth/ping")
+        response = client.get("http://localhost:#{server.port}/auth/basic/ping")
         response.status.should == 401
         response.body.to_s.should == ""
       end
@@ -43,7 +43,7 @@ describe Rack::Client::Auth::Basic do
       end
 
       it "succeeds with authorization" do
-        client.get("http://localhost:#{server.port}/auth/ping") do |response|
+        client.get("http://localhost:#{server.port}/auth/basic/ping") do |response|
           response.status.should == 200
           response.headers["Content-Type"].should == "text/html"
           response.body.to_s.should == "pong"
@@ -59,7 +59,7 @@ describe Rack::Client::Auth::Basic do
       end
 
       it "fails with authorization" do
-        client.get("http://localhost:#{server.port}/auth/ping") do |response|
+        client.get("http://localhost:#{server.port}/auth/basic/ping") do |response|
           response.status.should == 401
           response.body.to_s.should == ""
         end
