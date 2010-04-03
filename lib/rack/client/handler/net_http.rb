@@ -28,6 +28,7 @@ module Rack
                  when String   then request.body
                  end
 
+          http.start
           http.request(klass.new(request.path, headers(request.env)), body) do |net_response|
             if block_given?
               yield parse(net_response)
