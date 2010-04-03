@@ -4,7 +4,7 @@ module Rack
   module Client
     module Handler
       class EmHttp
-        include Rack::Client::Handler::DualBand
+        include Rack::Client::DualBand
 
         def initialize(url)
           @uri = URI.parse(url)

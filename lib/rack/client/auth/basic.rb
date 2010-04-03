@@ -2,6 +2,8 @@ module Rack
   module Client
     module Auth
       class Basic
+        include Rack::Client::DualBand
+
         def initialize(app, username, password)
           @app, @username, @password = app, username, password
         end

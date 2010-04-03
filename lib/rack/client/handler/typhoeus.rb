@@ -4,7 +4,7 @@ module Rack
   module Client
     module Handler
       class Typhoeus
-        include Rack::Client::Handler::DualBand
+        include Rack::Client::DualBand
 
         def initialize(url, hydra = Typhoeus::Hydra.new)
           @uri, @hydra = URI.parse(url), hydra
