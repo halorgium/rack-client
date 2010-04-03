@@ -24,5 +24,6 @@ require 'rack/client/handler'
 require 'rack/client/dual_band'
 
 require 'rack/client/follow_redirects'
+require 'rack/client/auth/abstract/attempt'
 require 'rack/client/auth/basic'
 require 'rack/client/auth/digest/md5'
