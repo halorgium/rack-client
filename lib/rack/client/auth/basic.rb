@@ -22,8 +22,9 @@ module Rack
 
         def async_call(env, &b)
           @app.call(env) do |response_parts|
-            response = parse_response(*response_parts)
-            auth_response = Basic::Response.new(response)
+            request       = Rack::Request.new(env)
+            response      = parse_response(*response_parts)
+            auth_response = Basic::Attempt.new(request, response)
 
             if auth_response.required? && (auth_response.unspecified? || auth_response.basic?)
               authorized_call(env, &b)
