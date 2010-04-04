@@ -22,11 +22,11 @@ module Rack
 
         def async_call(env, &b)
           @app.call(env) do |response_parts|
-            request       = Rack::Request.new(env)
-            response      = parse_response(*response_parts)
-            auth_response = Basic::Attempt.new(request, response)
+            request   = Rack::Request.new(env)
+            response  = parse_response(*response_parts)
+            attempt   = Basic::Attempt.new(request, response)
 
-            if auth_response.required? && (auth_response.unspecified? || auth_response.basic?)
+            if attempt.required? && (attempt.unspecified? || attempt.basic?)
               authorized_call(env, &b)
             else
               yield response.finish

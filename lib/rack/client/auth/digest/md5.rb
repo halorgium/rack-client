@@ -15,13 +15,25 @@ module Rack
             response  = parse_response(*@app.call(env))
             attempt   = Digest::Attempt.new(request, response, @realm, @username, @password)
 
-            if attempt.required? && attempt.digest?
-              if valid?(attempt)
-                return @app.call(env.merge(authorization(attempt)))
-              end
+            if attempt.required? && attempt.digest? && valid?(attempt)
+              return @app.call(env.merge(authorization(attempt)))
             end
 
             response.finish
+          end
+
+          def async_call(env)
+            @app.call(env) do |response_parts|
+              request   = Rack::Request.new(env)
+              response  = parse_response(*response_parts)
+              attempt   = Digest::Attempt.new(request, response, @realm, @username, @password)
+
+              if attempt.required? && attempt.digest? && valid?(attempt)
+                @app.call(env.merge(authorization(attempt))) {|response_parts| yield response_parts }
+              else
+                @app.call(env) {|response_parts| yield response_parts }
+              end
+            end
           end
 
           def valid?(attempt)
