@@ -1,6 +1,5 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-
 describe Rack::Client, "with a standard piece of Rack middleware" do
   context "Rack::ETag" do
     let(:client) do

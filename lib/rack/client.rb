@@ -1,4 +1,5 @@
 require 'rack'
+require 'rack/cache'
 require 'forwardable'
 
 module Rack
@@ -29,3 +30,5 @@ require 'rack/client/auth/basic'
 require 'rack/client/auth/digest/challenge'
 require 'rack/client/auth/digest/params'
 require 'rack/client/auth/digest/md5'
+
+require 'rack/client/cache'

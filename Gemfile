@@ -1,4 +1,5 @@
 gem 'rack'
+gem 'rack-cache'
 
 only :test do
   gem 'rake'
