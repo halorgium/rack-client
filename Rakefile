@@ -5,7 +5,7 @@ require "rake/clean"
 require "spec/rake/spectask"
 
 $:.unshift File.join(File.dirname(__FILE__), 'lib')
-require 'rack/client'
+require 'rack/client/version'
 
 Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
@@ -27,10 +27,9 @@ spec = Gem::Specification.new do |s|
   s.test_files        = Dir["spec/**/*"]
 
   require 'bundler'
-  manifest = Bundler::Environment.load(File.dirname(__FILE__) + '/Gemfile')
-  manifest.dependencies.each do |d|
-    next if d.only && d.only.include?('test')
-    s.add_dependency(d.name, d.version)
+  manifest = Bundler.setup
+  manifest.dependencies_for(:default).each do |d|
+    s.add_dependency(d.name, d.version_requirement)
   end
 end
 

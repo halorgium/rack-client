@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Rack::Client::Handler::Excon do
 
   def client
+    Rack::Client::Handler::Typhoeus # manual autoload :(
+
     hydra = self.hydra
     Rack::Client.new { run Rack::Client::Handler::Typhoeus.new("http://localhost:#{server.port}", hydra) }
   end
