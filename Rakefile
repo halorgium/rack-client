@@ -1,11 +1,14 @@
+require 'rubygems'
 require 'rake'
 require "rake/gempackagetask"
 require "rake/clean"
 require "spec/rake/spectask"
-require File.expand_path("./lib/rack/client")
+
+$:.unshift File.join(File.dirname(__FILE__), 'lib')
+require 'rack/client'
 
 Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_files = FileList['spec/*_spec.rb']
+  t.spec_files = FileList['spec/**/*_spec.rb']
   t.spec_opts = ['-c']
 end
 
