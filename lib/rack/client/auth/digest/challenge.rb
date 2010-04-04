@@ -2,7 +2,7 @@ module Rack
   module Client
     module Auth
       module Digest
-        class Attempt < Abstract::Attempt
+        class Challenge < Abstract::Challenge
           def initialize(request, response, realm, username, password)
             super(request, response)
             @realm, @username, @password = realm, username, password

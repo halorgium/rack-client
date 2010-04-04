@@ -11,9 +11,9 @@ module Rack
         def sync_call(env)
           request   = Rack::Request.new(env)
           response  = parse_response(*@app.call(env))
-          attempt   = Basic::Attempt.new(request, response)
+          challenge = Basic::Challenge.new(request, response)
 
-          if attempt.required? && (attempt.unspecified? || attempt.basic?)
+          if challenge.required? && (challenge.unspecified? || challenge.basic?)
             return authorized_call(env)
           end
 
@@ -24,9 +24,9 @@ module Rack
           @app.call(env) do |response_parts|
             request   = Rack::Request.new(env)
             response  = parse_response(*response_parts)
-            attempt   = Basic::Attempt.new(request, response)
+            challenge = Basic::Challenge.new(request, response)
 
-            if attempt.required? && (attempt.unspecified? || attempt.basic?)
+            if challenge.required? && (challenge.unspecified? || challenge.basic?)
               authorized_call(env, &b)
             else
               yield response.finish
@@ -50,7 +50,7 @@ module Rack
           Rack::Response.new(body, status, headers)
         end
 
-        class Attempt < Abstract::Attempt
+        class Challenge < Abstract::Challenge
           def basic?
             :basic == scheme
           end

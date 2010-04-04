@@ -3,7 +3,6 @@ module Rack
     module Auth
       module Digest
         class Params < Rack::Auth::Digest::Params
-
         end
       end
     end

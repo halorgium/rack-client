@@ -2,7 +2,7 @@ module Rack
   module Client
     module Auth
       module Abstract
-        class Attempt
+        class Challenge
           extend Forwardable
 
           def_delegators :@request, :request_method, :path
