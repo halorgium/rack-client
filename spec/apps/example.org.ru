@@ -58,6 +58,14 @@ class ExampleOrg < Sinatra::Base
       Time.now.to_f.to_s
     end
   end
+
+  get '/cookied' do
+    if request.cookies.empty?
+      response.set_cookie('time', :domain => 'localhost', :path => '/', :value => Time.now.to_f)
+      response.set_cookie('time2', :domain => 'localhost', :path => '/cookied', :value => Time.now.to_f)
+    end
+    ''
+  end
 end
 
 require 'pp'
