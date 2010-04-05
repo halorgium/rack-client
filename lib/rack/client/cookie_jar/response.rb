@@ -2,29 +2,17 @@ module Rack
   module Client
     module CookieJar
       class Response < Rack::Response
-        def initialize(heap, status, headers, body)
+        def initialize(status, headers, body)
           super(body, status, headers)
-          @heap = heap
-
-          save_cookies!
-        end
-
-        def save_cookies!
-          cookies.each do |cookie|
-            @heap[cookie.key] = cookie
-          end
         end
 
         def cookies
-          return [] unless cookie_header
-
-          @cookies ||= cookie_header.last.split(', ').map do |part|
-              Cookie.from(part)
-            end
+          return [] unless set_cookie
+          Cookie.parse(set_cookie.last)
         end
 
-        def cookie_header
-          @cookie_header ||= headers.detect {|h,_| h =~ /^SET-COOKIE$/i }
+        def set_cookie
+          @set_cookie ||= headers.detect {|(k,v)| k =~ /Set-Cookie/i }
         end
       end
     end
