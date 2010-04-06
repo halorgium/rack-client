@@ -13,7 +13,7 @@ module Rack
 
     def self.new(*a, &block)
       block ||= lambda { run Rack::Client::Handler::NetHTTP }
-      Rack::Client::Base.new(Rack::Builder.app(&block), *a)
+      Rack::Client::Simple.new(Rack::Builder.app(&block), *a)
     end
   end
 end
@@ -24,6 +24,7 @@ require 'rack/client/base'
 require 'rack/client/handler'
 require 'rack/client/dual_band'
 require 'rack/client/response'
+require 'rack/client/simple'
 
 require 'rack/client/follow_redirects'
 require 'rack/client/auth/abstract/challenge'

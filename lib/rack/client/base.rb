@@ -12,41 +12,41 @@ module Rack
 
       def delete(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('DELETE', url, headers, body)) {|tuple| yield Response.new(*tuple) }
+          call(build_env('DELETE', url, headers, body)) {|tuple| yield *tuple }
         else
-          Response.new(*call(build_env('DELETE', url, headers, body)))
+          return *call(build_env('DELETE', url, headers, body))
         end
       end
 
       def get(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('GET', url, headers, body)) {|tuple| yield Response.new(*tuple) }
+          call(build_env('GET', url, headers, body)) {|tuple| yield *tuple }
         else
-          Response.new(*call(build_env('GET', url, headers, body)))
+          return *call(build_env('GET', url, headers, body))
         end
       end
 
       def head(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('HEAD', url, headers, body)) {|tuple| yield Response.new(*tuple) }
+          call(build_env('HEAD', url, headers, body)) {|tuple| yield *tuple }
         else
-          Response.new(*call(build_env('HEAD', url, headers, body)))
+          return *call(build_env('HEAD', url, headers, body))
         end
       end
 
       def post(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('POST', url, headers, body)) {|tuple| yield Response.new(*tuple) }
+          call(build_env('POST', url, headers, body)) {|tuple| yield *tuple }
         else
-          Response.new(*call(build_env('POST', url, headers, body)))
+          return *call(build_env('POST', url, headers, body))
         end
       end
 
       def put(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('PUT', url, headers, body)) {|tuple| yield Response.new(*tuple) }
+          call(build_env('PUT', url, headers, body)) {|tuple| yield *tuple }
         else
-          Response.new(*call(build_env('PUT', url, headers, body)))
+          return *call(build_env('PUT', url, headers, body))
         end
       end
 
