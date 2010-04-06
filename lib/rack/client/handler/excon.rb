@@ -4,11 +4,17 @@ module Rack
   module Client
     module Handler
       class Excon
+        include DualBand
+
         def initialize(url)
           @uri = URI.parse(url)
         end
 
-        def call(env, &block)
+        def async_call(env)
+          raise("Asynchronous API is not supported for EmHttp Handler") unless block_given?
+        end
+
+        def sync_call(env)
           request = Rack::Request.new(env)
 
           body = case request.body
@@ -18,16 +24,11 @@ module Rack
                  when String   then request.body
                  end
 
-          response = parse(connection.request(:method => request.request_method,
-                             :path  => request.path,
-                             :body  => body))
+          response = parse connection.request(:method => request.request_method,
+                                              :path  => request.path,
+                                              :body  => body)
 
-          if block_given?
-            yield response.finish
-            nil
-          else
-            return response.finish
-          end
+          response.finish
         end
 
         def parse(excon_response)
