@@ -12,41 +12,41 @@ module Rack
 
       def delete(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('DELETE', url, headers, body)) {|tuple| yield parse(*tuple) }
+          call(build_env('DELETE', url, headers, body)) {|tuple| yield Response.new(*tuple) }
         else
-          parse *call(build_env('DELETE', url, headers, body))
+          Response.new(*call(build_env('DELETE', url, headers, body)))
         end
       end
 
       def get(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('GET', url, headers, body)) {|tuple| yield parse(*tuple) }
+          call(build_env('GET', url, headers, body)) {|tuple| yield Response.new(*tuple) }
         else
-          parse *call(build_env('GET', url, headers, body))
+          Response.new(*call(build_env('GET', url, headers, body)))
         end
       end
 
       def head(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('HEAD', url, headers, body)) {|tuple| yield parse(*tuple) }
+          call(build_env('HEAD', url, headers, body)) {|tuple| yield Response.new(*tuple) }
         else
-          parse *call(build_env('HEAD', url, headers, body))
+          Response.new(*call(build_env('HEAD', url, headers, body)))
         end
       end
 
       def post(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('POST', url, headers, body)) {|tuple| yield parse(*tuple) }
+          call(build_env('POST', url, headers, body)) {|tuple| yield Response.new(*tuple) }
         else
-          parse *call(build_env('POST', url, headers, body))
+          Response.new(*call(build_env('POST', url, headers, body)))
         end
       end
 
       def put(url,  headers = {}, body = nil)
         if block_given?
-          call(build_env('PUT', url, headers, body)) {|tuple| yield parse(*tuple) }
+          call(build_env('PUT', url, headers, body)) {|tuple| yield Response.new(*tuple) }
         else
-          parse *call(build_env('PUT', url, headers, body))
+          Response.new(*call(build_env('PUT', url, headers, body)))
         end
       end
 
@@ -70,10 +70,6 @@ module Rack
         env.update 'rack.errors' => StringIO.new
 
         env
-      end
-
-      def parse(status, headers = {}, body = [])
-        Rack::Response.new(body, status, headers)
       end
     end
   end

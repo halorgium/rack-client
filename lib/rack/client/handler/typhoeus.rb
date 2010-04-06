@@ -16,7 +16,7 @@ module Rack
           typhoeus_request = request_for(rack_request)
 
           typhoeus_request.on_complete do |response|
-            yield parse(response)
+            yield parse(response).finish
           end
 
           @hydra.queue typhoeus_request
@@ -25,12 +25,12 @@ module Rack
         def sync_call(env)
           rack_request = Rack::Request.new(env)
 
-          parse process(rack_request)
+          parse(process(rack_request)).finish
         end
 
         def parse(typhoeus_response)
           body = (typhoeus_response.body.nil? || typhoeus_response.body.empty?) ? [] : StringIO.new(typhoeus_response.body)
-          Rack::Response.new(body, typhoeus_response.code, typhoeus_response.headers_hash).finish
+          Response.new(typhoeus_response.code, typhoeus_response.headers_hash, body)
         end
 
         def request_for(rack_request)

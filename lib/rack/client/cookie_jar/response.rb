@@ -1,11 +1,7 @@
 module Rack
   module Client
     module CookieJar
-      class Response < Rack::Response
-        def initialize(status, headers, body)
-          super(body, status, headers)
-        end
-
+      class Response < Client::Response
         def cookies
           return [] unless set_cookie
           Cookie.parse(set_cookie.last)

@@ -23,16 +23,16 @@ module Rack
                              :body  => body))
 
           if block_given?
-            yield response
+            yield response.finish
             nil
           else
-            return response
+            return response.finish
           end
         end
 
         def parse(excon_response)
           body = excon_response.body.empty? ? [] : StringIO.new(excon_response.body)
-          Rack::Response.new(body, excon_response.status, excon_response.headers).finish
+          Response.new(excon_response.status, excon_response.headers, body)
         end
 
         def connection

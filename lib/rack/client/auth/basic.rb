@@ -10,7 +10,7 @@ module Rack
 
         def sync_call(env)
           request   = Rack::Request.new(env)
-          response  = parse_response(*@app.call(env))
+          response  = Response.new(*@app.call(env))
           challenge = Basic::Challenge.new(request, response)
 
           if challenge.required? && (challenge.unspecified? || challenge.basic?)
@@ -23,7 +23,7 @@ module Rack
         def async_call(env, &b)
           @app.call(env) do |response_parts|
             request   = Rack::Request.new(env)
-            response  = parse_response(*response_parts)
+            response  = Response.new(*response_parts)
             challenge = Basic::Challenge.new(request, response)
 
             if challenge.required? && (challenge.unspecified? || challenge.basic?)
@@ -44,10 +44,6 @@ module Rack
 
         def encoded_login
           ["#{@username}:#{@password}"].pack("m*")
-        end
-
-        def parse_response(status, headers = {}, body = [])
-          Rack::Response.new(body, status, headers)
         end
 
         class Challenge < Abstract::Challenge

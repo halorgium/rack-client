@@ -12,7 +12,7 @@ module Rack
 
           def sync_call(env)
             request   = Rack::Request.new(env)
-            response  = parse_response(*@app.call(env))
+            response  = Response.new(*@app.call(env))
             challenge = Digest::Challenge.new(request, response, @realm, @username, @password)
 
             if challenge.required? && challenge.digest? && valid?(challenge)
@@ -25,7 +25,7 @@ module Rack
           def async_call(env)
             @app.call(env) do |response_parts|
               request   = Rack::Request.new(env)
-              response  = parse_response(*response_parts)
+              response  = Response.new(*response_parts)
               challenge = Digest::Challenge.new(request, response, @realm, @username, @password)
 
               if challenge.required? && challenge.digest? && valid?(challenge)
@@ -70,10 +70,6 @@ module Rack
 
           def next_nc
             sprintf("%08x", @nc += 1)
-          end
-
-          def parse_response(status, headers = {}, body = [])
-            Rack::Response.new(body, status, headers)
           end
         end
       end

@@ -20,11 +20,11 @@ module Rack
           EM.schedule do
             em_http = connection(request.path).send(request.request_method.downcase, request_options(request))
             em_http.callback do
-              yield parse(em_http)
+              yield parse(em_http).finish
             end
 
             em_http.errback do
-              yield parse(em_http)
+              yield parse(em_http).finish
             end
           end
         end
@@ -50,7 +50,7 @@ module Rack
 
         def parse(em_http)
           body = em_http.response.empty? ? [] : StringIO.new(em_http.response)
-          Rack::Response.new(body, em_http.response_header.status, normalize_headers(em_http)).finish
+          Response.new(body, em_http.response_header.status, normalize_headers(em_http))
         end
 
         def normalize_headers(em_http)

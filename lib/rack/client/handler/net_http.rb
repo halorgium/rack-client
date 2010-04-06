@@ -15,7 +15,7 @@ module Rack
           request = Rack::Request.new(env)
 
           connection_for(request).request(net_request_for(request), body_for(request)) do |net_response|
-            return parse(net_response)
+            return parse(net_response).finish
           end
         end
 
@@ -23,7 +23,7 @@ module Rack
           request = Rack::Request.new(env)
 
           connection_for(request).request(net_request_for(request), body_for(request)) do |net_response|
-            yield parse(net_response)
+            yield parse(net_response).finish
           end
         end
 
@@ -58,7 +58,7 @@ module Rack
 
         def parse(net_response)
           body = (net_response.body.nil? || net_response.body.empty?) ? [] : StringIO.new(net_response.body)
-          Rack::Response.new(body, net_response.code.to_i, parse_headers(net_response)).finish
+          Response.new(net_response.code.to_i, parse_headers(net_response), body)
         end
 
         def headers(env)
