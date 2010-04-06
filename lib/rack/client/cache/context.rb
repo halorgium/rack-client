@@ -2,9 +2,10 @@ module Rack
   module Client
     module Cache
       class Context < Rack::Cache::Context
-        include Rack::Client::Cache::Options
+        include Options
+        include DualBand
 
-        def call!(env)
+        def sync_call(env)
           @trace = []
           @request = Request.new(options.merge(env))
 
@@ -24,6 +25,32 @@ module Rack
           response.headers['X-Rack-Client-Cache'] = trace
 
           response.to_a
+        end
+
+        def async_call(env)
+          @trace = []
+          @request = Request.new(options.merge(env))
+
+          if @request.cacheable?
+            @backend.call(@env = @request.env) do |response_parts|
+              response = Response.new(*response_parts)
+
+              if response.not_modified?
+                response = lookup
+              elsif response.cacheable?
+                store(response)
+              else
+                pass
+              end
+
+              trace = @trace.join(', ')
+              response.headers['X-Rack-Client-Cache'] = trace
+
+              yield response.to_a
+            end
+          else
+            @backend.call(env) {|*response| yield *response }
+          end
         end
 
         def lookup

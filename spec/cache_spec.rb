@@ -8,13 +8,33 @@ describe Rack::Client::Cache do
     end
   end
 
-  it "successfully retrieves cache hits" do
-    response = client.get("http://localhost:#{server.port}/cacheable")
-    response.headers['X-Rack-Client-Cache'].should include('store')
-    original_body = response.body
+  after(:each) do
+    Rack::Cache::Storage.instance.clear
+  end
 
-    response = client.get("http://localhost:#{server.port}/cacheable")
-    response.headers['X-Rack-Client-Cache'].should include('fresh')
-    response.body.should == original_body
+  context 'Synchronous API' do
+    it "successfully retrieves cache hits" do
+      response = client.get("http://localhost:#{server.port}/cacheable")
+      response.headers['X-Rack-Client-Cache'].should include('store')
+      original_body = response.body
+
+      response = client.get("http://localhost:#{server.port}/cacheable")
+      response.headers['X-Rack-Client-Cache'].should include('fresh')
+      response.body.should == original_body
+    end
+  end
+
+  context 'Asynchronous API' do
+    it "successfully retrieves cache hits" do
+      client.get("http://localhost:#{server.port}/cacheable") do |response|
+        response.headers['X-Rack-Client-Cache'].should include('store')
+        original_body = response.body
+
+        client.get("http://localhost:#{server.port}/cacheable") do |response|
+          response.headers['X-Rack-Client-Cache'].should include('fresh')
+          response.body.should == original_body
+        end
+      end
+    end
   end
 end
