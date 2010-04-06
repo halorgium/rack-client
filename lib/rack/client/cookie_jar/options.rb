@@ -32,7 +32,7 @@ module Rack
 
         def initialize_options(options={})
           @default_options = {
-            'rack-client-cookiejar.storage'     => Storage.instance,
+            'rack-client-cookiejar.storage'     => Storage.new,
             'rack-client-cookiejar.cookiestore' => 'heap:/',
           }
           self.options = options

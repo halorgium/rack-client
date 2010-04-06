@@ -3,6 +3,7 @@ module Rack
     module CookieJar
       class Context
         include Options
+        include DualBand
 
         def initialize(app, options = {})
           @app = app
@@ -10,7 +11,7 @@ module Rack
           initialize_options options
         end
 
-        def call(env)
+        def sync_call(env)
           request = Request.new(env)
           cookies = lookup(request)
           request.inject(cookies)
@@ -21,6 +22,21 @@ module Rack
 
           response['rack-client-cookiejar.cookies'] = cookies.map {|c| c.to_header } * ', ' unless cookies.empty?
           response.finish
+        end
+
+        def async_call(env)
+          request = Request.new(env)
+          cookies = lookup(request)
+          request.inject(cookies)
+
+          @app.call(request.env) do |request_parts|
+            response  = Response.new(*request_parts)
+            cookies   = Cookie.merge(cookies, response.cookies)
+            store cookies
+
+            response['rack-client-cookiejar.cookies'] = cookies.map {|c| c.to_header } * ', ' unless cookies.empty?
+            yield response.finish
+          end
         end
 
         def lookup(request)
