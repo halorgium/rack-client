@@ -1,19 +1,13 @@
 module Rack
   module Client
     class FollowRedirects
+      include DualBand
+
       def initialize(app)
         @app = app
       end
 
-      def call(env, &b)
-        if block_given?
-          async(env, &b)
-        else
-          sync(env)
-        end
-      end
-
-      def async(env, &block)
+      def async_call(env, &block)
         @app.call(env) do |tuple|
           response = Response.new(*tuple)
 
@@ -25,7 +19,7 @@ module Rack
         end
       end
 
-      def sync(env, &block)
+      def sync_call(env, &block)
         response = Response.new(*@app.call(env))
         response.redirect? ? follow_redirect(response, env, &block) : response
       end
