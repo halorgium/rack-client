@@ -20,11 +20,11 @@ end
 
 require 'rack/client/version'
 
-require 'rack/client/base'
 require 'rack/client/handler'
 require 'rack/client/dual_band'
 require 'rack/client/response'
-require 'rack/client/simple'
+
+require 'rack/client/adapter'
 
 require 'rack/client/follow_redirects'
 require 'rack/client/auth/abstract/challenge'
