@@ -4,4 +4,3 @@ module Rack
     autoload :Simple, 'rack/client/adapter/simple'
   end
 end
-
