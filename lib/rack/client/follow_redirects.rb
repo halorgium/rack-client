@@ -31,8 +31,16 @@ module Rack
       def next_env(response, env)
         env, uri = env.dup, URI.parse(response['Location'])
 
-        env.update 'PATH_INFO'      => uri.path
         env.update 'REQUEST_METHOD' => 'GET'
+        env.update 'PATH_INFO'      => uri.path.empty? ? '/' : uri.path
+        env.update 'REQUEST_URI'    => uri.to_s
+        env.update 'SERVER_NAME'    => uri.host
+        env.update 'SERVER_PORT'    => uri.port
+        env.update 'SCRIPT_NAME'    => ''
+
+        env.update 'rack.url_scheme'  => uri.scheme
+
+        env.update 'HTTPS'  => env["rack.url_scheme"] == "https" ? "on" : "off"
 
         env
       end
