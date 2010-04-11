@@ -9,8 +9,9 @@ module Rack
 
       %w[ options get head post put delete trace connect ].each do |method|
         eval <<-RUBY, binding, __FILE__, __LINE__ + 1
-          def #{method}(url, body_or_params = {}, headers = {})
-            body = Hash === body_or_params ? body_or_params.map {|k,v| "\#{k}=\#{v}" }.join('&') : body_or_params
+          def #{method}(url, headers = {}, body_or_params = nil)
+            headers, body_or_params = {}, headers if body_or_params.nil?
+            body = Hash === body_or_params ? Utils.build_query(body_or_params) : body_or_params
 
             if block_given?
               super(url, headers, body) {|*tuple| yield Response.new(*tuple) }

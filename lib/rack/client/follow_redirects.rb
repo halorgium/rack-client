@@ -29,7 +29,12 @@ module Rack
       end
 
       def next_env(response, env)
-        env, uri = env.dup, URI.parse(response['Location'])
+        env = env.dup
+
+        original    = URI.parse(env['REQUEST_URI'])
+        redirection = URI.parse(response['Location'])
+
+        uri = original.merge(redirection)
 
         env.update 'REQUEST_METHOD' => 'GET'
         env.update 'PATH_INFO'      => uri.path.empty? ? '/' : uri.path
