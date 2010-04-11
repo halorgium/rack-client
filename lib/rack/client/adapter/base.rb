@@ -9,44 +9,16 @@ module Rack
         @app = app
       end
 
-      def delete(url,  headers = {}, body = nil)
-        if block_given?
-          call(build_env('DELETE', url, headers, body)) {|tuple| yield *tuple }
-        else
-          return *call(build_env('DELETE', url, headers, body))
-        end
-      end
-
-      def get(url,  headers = {}, body = nil)
-        if block_given?
-          call(build_env('GET', url, headers, body)) {|tuple| yield *tuple }
-        else
-          return *call(build_env('GET', url, headers, body))
-        end
-      end
-
-      def head(url,  headers = {}, body = nil)
-        if block_given?
-          call(build_env('HEAD', url, headers, body)) {|tuple| yield *tuple }
-        else
-          return *call(build_env('HEAD', url, headers, body))
-        end
-      end
-
-      def post(url,  headers = {}, body = nil)
-        if block_given?
-          call(build_env('POST', url, headers, body)) {|tuple| yield *tuple }
-        else
-          return *call(build_env('POST', url, headers, body))
-        end
-      end
-
-      def put(url,  headers = {}, body = nil)
-        if block_given?
-          call(build_env('PUT', url, headers, body)) {|tuple| yield *tuple }
-        else
-          return *call(build_env('PUT', url, headers, body))
-        end
+      %w[ options get head post put delete trace connect ].each do |method|
+        eval <<-RUBY, binding, __FILE__, __LINE__ + 1
+          def #{method}(url, headers = {}, body = nil)
+            if block_given?
+              call(build_env('#{method.upcase}', url, headers, body)) {|tuple| yield *tuple }
+            else
+              return *call(build_env('#{method.upcase}', url, headers, body))
+            end
+          end
+        RUBY
       end
 
       def build_env(request_method, url,  headers = {}, body = nil)

@@ -7,44 +7,16 @@ module Rack
         @base_uri = URI.parse(url) unless url.nil?
       end
 
-      def delete(url,  headers = {}, body = nil)
-        if block_given?
-          super {|*tuple| yield Response.new(*tuple) }
-        else
-          return Response.new(*super)
-        end
-      end
-
-      def get(url,  headers = {}, body = nil)
-        if block_given?
-          super {|*tuple| yield Response.new(*tuple) }
-        else
-          return Response.new(*super)
-        end
-      end
-
-      def head(url,  headers = {}, body = nil)
-        if block_given?
-          super {|*tuple| yield Response.new(*tuple) }
-        else
-          return Response.new(*super)
-        end
-      end
-
-      def post(url,  headers = {}, body = nil)
-        if block_given?
-          super {|*tuple| yield Response.new(*tuple) }
-        else
-          return Response.new(*super)
-        end
-      end
-
-      def put(url,  headers = {}, body = nil)
-        if block_given?
-          super {|*tuple| yield Response.new(*tuple) }
-        else
-          return Response.new(*super)
-        end
+      %w[ options get head post put delete trace connect ].each do |method|
+        eval <<-RUBY, binding, __FILE__, __LINE__ + 1
+          def #{method}(url, headers = {}, body = nil)
+            if block_given?
+              super {|*tuple| yield Response.new(*tuple) }
+            else
+              return Response.new(*super)
+            end
+          end
+        RUBY
       end
 
       def build_env(request_method, url, headers = {}, body = nil)
