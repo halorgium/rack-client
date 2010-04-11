@@ -27,8 +27,8 @@ module Rack
         env.update 'CONTENT_TYPE'   => 'application/x-www-form-urlencoded'
 
         uri = URI.parse(url)
-        env.update 'PATH_INFO'   => uri.path
-        env.update 'REQUEST_URI' => uri.path
+        env.update 'PATH_INFO'   => uri.path.empty? ? '/' : uri.path
+        env.update 'REQUEST_URI' => uri.to_s
         env.update 'SERVER_NAME' => uri.host
         env.update 'SERVER_PORT' => uri.port
         env.update 'SCRIPT_NAME' => ''
@@ -37,8 +37,12 @@ module Rack
                 when nil        then StringIO.new
                 when String     then StringIO.new(body)
                 end
-        env.update 'rack.input' => input
-        env.update 'rack.errors' => StringIO.new
+
+        env.update 'rack.input'       => input
+        env.update 'rack.errors'      => StringIO.new
+        env.update 'rack.url_scheme'  => uri.scheme
+
+        env.update 'HTTPS'  => env["rack.url_scheme"] == "https" ? "on" : "off"
 
         env
       end

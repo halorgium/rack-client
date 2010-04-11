@@ -1,4 +1,5 @@
 require 'net/http'
+require 'net/https'
 
 module Rack
   module Client
@@ -28,11 +29,15 @@ module Rack
         end
 
         def connection_for(request)
-          connections[[request.host, request.port]] ||= begin
-            connection = Net::HTTP.new(request.host, request.port)
-            connection.start
-            connection
+          connection = Net::HTTP.new(request.host, request.port)
+
+          if request.scheme == 'https'
+            connection.use_ssl = true
+            connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
           end
+
+          connection.start
+          connection
         end
 
         def net_request_for(request)
