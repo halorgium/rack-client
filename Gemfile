@@ -1,18 +1,25 @@
 source :gemcutter
 
-gem 'rack'
-gem 'rack-cache'
-
 group :test do
+  group :examples do
+    group :default do
+      gem 'rack'
+      gem 'rack-cache', :require => 'rack/cache'
+      gem 'rack-contrib', :require => 'rack/contrib'
+    end
+
+    gem 'excon'
+    gem 'em-http-request'
+    gem 'eventmachine'
+    gem 'typhoeus'
+    gem 'json'
+  end
+
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
   gem 'rspec', :require => 'spec'
-  gem 'rack-contrib', :require => 'rack/contrib'
   gem 'ruby-debug'
+  gem 'em-spec', '0.2.1', :require => 'em-spec/rspec'
   gem 'bundler'
   gem 'mongrel'
-  gem 'excon'
-  gem 'em-http-request'
-  gem 'em-spec', '0.2.1', :require => 'em-spec/rspec'
-  gem 'typhoeus'
 end
