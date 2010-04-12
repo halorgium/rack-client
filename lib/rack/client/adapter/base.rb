@@ -27,7 +27,11 @@ module Rack
         env.update 'CONTENT_TYPE'   => 'application/x-www-form-urlencoded'
 
         uri = URI.parse(url)
-        env.update 'PATH_INFO'   => uri.path.empty? ? '/' : uri.path
+
+        path_info = uri.path.empty? ? '/' : uri.path
+        path_info += '?' + uri.query unless uri.query.nil? || uri.query.empty?
+
+        env.update 'PATH_INFO'   => path_info
         env.update 'REQUEST_URI' => uri.to_s
         env.update 'SERVER_NAME' => uri.host
         env.update 'SERVER_PORT' => uri.port
