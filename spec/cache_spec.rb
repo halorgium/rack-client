@@ -9,7 +9,7 @@ describe Rack::Client::Cache do
   end
 
   after(:each) do
-    Rack::Cache::Storage.instance.clear
+    Rack::Client::Cache::Storage.instance.clear
   end
 
   context 'Synchronous API' do

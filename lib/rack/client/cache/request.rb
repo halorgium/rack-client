@@ -1,8 +1,8 @@
 module Rack
   module Client
     module Cache
-      class Request < Rack::Cache::Request
-        include Rack::Client::Cache::Options
+      class Request < Rack::Request
+        include Options
 
         def cacheable?
           request_method == 'GET'

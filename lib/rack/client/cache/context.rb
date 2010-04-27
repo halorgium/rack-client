@@ -1,22 +1,28 @@
 module Rack
   module Client
     module Cache
-      class Context < Rack::Cache::Context
+      class Context
         include Options
         include DualBand
 
+        def initialize(app, options = {})
+          @app = app
+
+          initialize_options options
+        end
+
         def sync_call(env)
           @trace = []
-          @request = Request.new(options.merge(env))
+          request = Request.new(options.merge(env))
 
-          return @backend.call(env) unless @request.cacheable?
+          return @app.call(env) unless request.cacheable?
 
-          response = Response.new(*@backend.call(@env = @request.env))
+          response = Response.new(*@app.call(env = request.env))
 
           if response.not_modified?
-            response = lookup
+            response = lookup(request)
           elsif response.cacheable?
-            store(response)
+            store(request, response)
           else
             pass
           end
@@ -29,16 +35,16 @@ module Rack
 
         def async_call(env)
           @trace = []
-          @request = Request.new(options.merge(env))
+          request = Request.new(options.merge(env))
 
-          if @request.cacheable?
-            @backend.call(@env = @request.env) do |response_parts|
+          if request.cacheable?
+            @app.call(env = request.env) do |response_parts|
               response = Response.new(*response_parts)
 
               if response.not_modified?
-                response = lookup
+                response = lookup(request)
               elsif response.cacheable?
-                store(response)
+                store(request, response)
               else
                 pass
               end
@@ -49,19 +55,24 @@ module Rack
               yield response.to_a
             end
           else
-            @backend.call(env) {|*response| yield *response }
+            @app.call(env) {|*response| yield *response }
           end
         end
 
-        def lookup
+        def lookup(request)
           begin
-            entry = metastore.lookup(@request, entitystore)
+            entry = metastore.lookup(request, entitystore)
             record :fresh
             entry
           rescue Exception => e
             log_error(e)
             return pass
           end
+        end
+
+        def store(request, response)
+          metastore.store(request, response, entitystore)
+          record :store
         end
 
         def metastore
@@ -73,9 +84,12 @@ module Rack
           uri = options['rack-client-cache.entitystore']
           storage.resolve_entitystore_uri(uri)
         end
+
+        # Record that an event took place.
+        def record(event)
+          @trace << event
+        end
       end
     end
   end
 end
-
-

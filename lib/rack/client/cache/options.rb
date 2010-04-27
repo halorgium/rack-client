@@ -121,9 +121,9 @@ module Rack
         private
         def initialize_options(options={})
           @default_options = {
-        'rack-client-cache.cache_key'        => Rack::Cache::Key,
+        'rack-client-cache.cache_key'        => Key,
         'rack-client-cache.verbose'          => true,
-        'rack-client-cache.storage'          => Rack::Cache::Storage.instance,
+        'rack-client-cache.storage'          => Storage.instance,
         'rack-client-cache.metastore'        => 'heap:/',
         'rack-client-cache.entitystore'      => 'heap:/',
         'rack-client-cache.default_ttl'      => 0,

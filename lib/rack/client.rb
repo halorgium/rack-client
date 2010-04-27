@@ -1,6 +1,6 @@
-require 'rack'
-require 'rack/cache'
 require 'forwardable'
+require 'uri'
+require 'rack'
 
 module Rack
   module Client
