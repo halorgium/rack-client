@@ -66,6 +66,11 @@ class ExampleOrg < Sinatra::Base
     end
     ''
   end
+
+  get '/hash.yml' do
+    content_type 'application/x-yaml'
+    {:foo => :bar}.to_yaml
+  end
 end
 
 require 'pp'

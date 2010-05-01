@@ -36,3 +36,5 @@ require 'rack/client/auth/digest/md5'
 require 'rack/client/cache'
 
 require 'rack/client/cookie_jar'
+
+require 'rack/client/parser'
