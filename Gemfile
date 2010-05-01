@@ -9,7 +9,7 @@ group :test do
     end
 
     gem 'excon'
-    gem 'em-http-request'
+    gem 'em-http-request', '>0.2.7'
     gem 'eventmachine'
     gem 'typhoeus'
     gem 'json'

@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-unless RUBY_VERSION == '1.8.7'
+if ''.respond_to?(:bytesize) || # String#bytesize defined by em-http-request > 0.2.7
+   RUBY_VERSION != '1.8.7'      # em-spec is broken on 1.8.7
+
   describe Rack::Client::Handler::EmHttp do
     include EM::Spec
 

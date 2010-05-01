@@ -50,7 +50,7 @@ module Rack
 
         def parse(em_http)
           body = em_http.response.empty? ? [] : StringIO.new(em_http.response)
-          Response.new(body, em_http.response_header.status, normalize_headers(em_http))
+          Response.new(em_http.response_header.status, normalize_headers(em_http), body)
         end
 
         def normalize_headers(em_http)
