@@ -29,7 +29,7 @@ module Rack
       def rackish?(header)
         case header
         when 'CONTENT_TYPE', 'CONTENT_LENGTH' then true
-        when /^rack(?:-client)/               then true
+        when /^rack[-.]/                      then true
         when /^HTTP_/                         then true
         else false
         end
