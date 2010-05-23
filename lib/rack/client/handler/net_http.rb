@@ -49,7 +49,7 @@ module Rack
                   when 'PUT'    then Net::HTTP::Put
                   end
 
-          klass.new(request.path, headers(request.env))
+          klass.new(request.path, Headers.from(request.env).to_http)
         end
 
         def body_for(request)
@@ -66,26 +66,14 @@ module Rack
           Response.new(net_response.code.to_i, parse_headers(net_response), body)
         end
 
-        def headers(env)
-          env.inject({}) do |h,(k,v)|
-            k =~ /^HTTP_(.*)$/ ?  h.update($1 => v) : h
-          end
-        end
-
         def parse_headers(net_response)
-          headers = {}
-          net_response.each do |(k,v)|
-            headers.update(clean_header(k) => v)
-          end
-          headers
-        end
+          headers = Headers.new
 
-        def clean_header(header)
-          header.gsub(/(\w+)/) do |matches|
-            matches.sub(/^./) do |char|
-              char.upcase
-            end
+          net_response.each do |(k,v)|
+            headers.update(k => v)
           end
+
+          headers.to_http
         end
 
         def connections

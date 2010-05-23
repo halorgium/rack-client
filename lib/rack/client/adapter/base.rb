@@ -22,9 +22,11 @@ module Rack
       end
 
       def build_env(request_method, url,  headers = {}, body = nil)
-        env = {}
+        env = Headers.new(headers).to_env
+
         env.update 'REQUEST_METHOD' => request_method
-        env.update 'CONTENT_TYPE'   => 'application/x-www-form-urlencoded'
+
+        env['CONTENT_TYPE'] ||= 'application/x-www-form-urlencoded'
 
         uri = URI.parse(url)
 

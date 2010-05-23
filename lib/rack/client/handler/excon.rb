@@ -24,16 +24,17 @@ module Rack
                  when String   then request.body
                  end
 
-          response = parse connection.request(:method => request.request_method,
-                                              :path  => request.path,
-                                              :body  => body)
+          response = parse connection.request(:method   => request.request_method,
+                                              :path     => request.path,
+                                              :headers  => Headers.from(env).to_http,
+                                              :body     => body)
 
           response.finish
         end
 
         def parse(excon_response)
           body = excon_response.body.empty? ? [] : StringIO.new(excon_response.body)
-          Response.new(excon_response.status, excon_response.headers, body)
+          Response.new(excon_response.status, Headers.new(excon_response.headers).to_http, body)
         end
 
         def connection

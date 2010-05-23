@@ -30,7 +30,7 @@ module Rack
 
         def parse(typhoeus_response)
           body = (typhoeus_response.body.nil? || typhoeus_response.body.empty?) ? [] : StringIO.new(typhoeus_response.body)
-          Response.new(typhoeus_response.code, typhoeus_response.headers_hash, body)
+          Response.new(typhoeus_response.code, Headers.new(typhoeus_response.headers_hash).to_http, body)
         end
 
         def request_for(rack_request)
@@ -44,7 +44,7 @@ module Rack
         def params_for(rack_request)
           {
             :method => rack_request.request_method.downcase.to_sym,
-            :headers => rack_request.env,
+            :headers => Headers.from(rack_request.env).to_http,
             :params => {}
           }.merge(body_params_for(rack_request))
         end
