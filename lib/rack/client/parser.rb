@@ -13,4 +13,5 @@ end
 require 'rack/client/parser/base'
 require 'rack/client/parser/body_collection'
 require 'rack/client/parser/context'
+require 'rack/client/parser/request'
 require 'rack/client/parser/response'

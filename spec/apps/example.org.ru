@@ -71,6 +71,11 @@ class ExampleOrg < Sinatra::Base
     content_type 'application/x-yaml'
     {:foo => :bar}.to_yaml
   end
+
+  post '/echo' do
+    content_type request.content_type
+    request.body.read
+  end
 end
 
 require 'pp'

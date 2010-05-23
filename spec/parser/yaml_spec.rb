@@ -13,5 +13,10 @@ describe Rack::Client::Parser::YAML do
       response = client.get("http://localhost:#{server.port}/hash.yml")
       response.headers['rack-client.body_collection'].should == [{:foo => :bar}]
     end
+
+    it "injects the dumped body into the request" do
+      response = client.post("http://localhost:#{server.port}/echo", {'rack-client.body_collection' => [{:foo => :bar}], 'Content-Type' => 'application/x-yaml'}, {})
+      response.headers['rack-client.body_collection'].should == [{:foo => :bar}]
+    end
   end
 end

@@ -10,7 +10,9 @@ module Rack
         def encode(input)
           output = StringIO.new
 
-          ::YAML.dump(input, output)
+          input.each do |object|
+            ::YAML.dump(object, output)
+          end
 
           output
         end
