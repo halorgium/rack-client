@@ -42,7 +42,6 @@ module Rack
 
               collection.finish
             ensure
-              io.close if io.respond_to? :close
               body.close if body.respond_to? :close
             end
           end
