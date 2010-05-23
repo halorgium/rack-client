@@ -1,6 +1,7 @@
 module Rack
   module Client
     module Parser
+      autoload :JSON, 'rack/client/parser/json'
       autoload :YAML, 'rack/client/parser/yaml'
 
       def self.new(app, &b)

@@ -67,9 +67,15 @@ class ExampleOrg < Sinatra::Base
     ''
   end
 
-  get '/hash.yml' do
-    content_type 'application/x-yaml'
-    {:foo => :bar}.to_yaml
+  get '/hash.:content_type' do |type|
+    case type
+    when 'json' then
+      content_type 'application/json'
+      {:foo => :bar}.to_json
+    when 'yaml', 'yml' then
+      content_type 'application/x-yaml'
+      {:foo => :bar}.to_yaml
+    end
   end
 
   post '/echo' do
