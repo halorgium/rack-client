@@ -1,15 +1,16 @@
-source :gemcutter
+source "http://rubygems.org"
+
+gem 'rack'
+
+group :optional do
+  gem 'rack-cache', :require => 'rack/cache'
+  gem 'rack-contrib', :require => 'rack/contrib'
+end
 
 group :test do
   group :examples do
-    group :default do
-      gem 'rack'
-      gem 'rack-cache', :require => 'rack/cache'
-      gem 'rack-contrib', :require => 'rack/contrib'
-    end
-
     gem 'excon'
-    gem 'em-http-request', '>0.2.7'
+    #gem 'em-http-request', '~>0.2.7'
     gem 'eventmachine'
     gem 'typhoeus'
     gem 'json'
