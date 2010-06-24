@@ -1,6 +1,8 @@
 source "http://rubygems.org"
 
-gem 'rack'
+group :runtime do
+  gem 'rack', ">=1.0.0"
+end
 
 group :optional do
   gem 'rack-cache', :require => 'rack/cache'
