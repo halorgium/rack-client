@@ -11,14 +11,18 @@ module Rack
 
       %w[ options get head post put delete trace connect ].each do |method|
         eval <<-RUBY, binding, __FILE__, __LINE__ + 1
-          def #{method}(url, headers = {}, body = nil)
-            if block_given?
-              call(build_env('#{method.upcase}', url, headers, body)) {|tuple| yield *tuple }
-            else
-              return *call(build_env('#{method.upcase}', url, headers, body))
-            end
+          def #{method}(url, headers = {}, body = nil, &block)
+            request('#{method.upcase}', url, headers, body, &block)
           end
         RUBY
+      end
+
+      def request(method, url, headers = {}, body = nil)
+        if block_given?
+          call(build_env(method.upcase, url, headers, body)) {|tuple| yield *tuple }
+        else
+          return *call(build_env(method.upcase, url, headers, body))
+        end
       end
 
       def build_env(request_method, url,  headers = {}, body = nil)
