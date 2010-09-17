@@ -12,7 +12,7 @@ end
 group :test do
   group :examples do
     gem 'excon'
-    #gem 'em-http-request', '~>0.2.7'
+    gem 'em-http-request'
     gem 'eventmachine'
     gem 'typhoeus'
     gem 'json'
@@ -20,9 +20,9 @@ group :test do
 
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
-  gem 'rspec', :require => 'spec'
+  gem 'rspec',    '>=2.0.0.beta'
   gem 'ruby-debug'
-  gem 'em-spec', '0.2.1', :require => 'em-spec/rspec'
-  gem 'bundler'
   gem 'mongrel'
+  gem 'cgi_multipart_eof_fix'
+  gem 'realweb'
 end
