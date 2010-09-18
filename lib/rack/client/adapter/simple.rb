@@ -16,7 +16,8 @@ module Rack
         end
 
         def body
-          @body ||= collapse!
+          collapse! unless @body
+          @body
         end
 
         def collapse!
