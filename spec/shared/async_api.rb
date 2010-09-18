@@ -21,6 +21,11 @@ module AsyncApi
 
   def callback(response)
     response.instance_eval(&@_response_block)
+  ensure
     finish
+  end
+
+  def finish
+    #noop
   end
 end
