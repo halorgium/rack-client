@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Rack::Client::Handler::EmHttp do
   include AsyncApi
 
-  def handler_app
-    Rack::Client::Handler::EmHttp.new(@base_url)
+  def rackup(builder)
+    builder.run Rack::Client::Handler::EmHttp.new
   end
 
   def finish

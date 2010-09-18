@@ -1,7 +1,7 @@
 shared_examples_for "Handler API" do
 
   subject do
-    Rack::Client::Simple.new(handler_app)
+    Rack::Client.new(@base_url, &method(:rackup))
   end
 
   context 'GET request' do

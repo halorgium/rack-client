@@ -6,10 +6,6 @@ module Rack
       class EmHttp
         include Rack::Client::DualBand
 
-        def initialize(url)
-          @uri = URI.parse(url)
-        end
-
         def sync_call(env)
           raise("Synchronous API is not supported for EmHttp Handler") unless block_given?
         end
@@ -18,7 +14,7 @@ module Rack
           request = Rack::Request.new(env)
 
           EM.schedule do
-            em_http = connection(request.path).send(request.request_method.downcase, request_options(request))
+            em_http = connection(request.url).send(request.request_method.downcase, request_options(request))
             em_http.callback do
               yield parse(em_http).finish
             end
@@ -29,8 +25,8 @@ module Rack
           end
         end
 
-        def connection(path)
-          @connection ||= EventMachine::HttpRequest.new((@uri + path).to_s)
+        def connection(url)
+          @connection ||= EventMachine::HttpRequest.new(url)
         end
 
         def request_options(request)
