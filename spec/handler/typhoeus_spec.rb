@@ -1,22 +1,21 @@
 require 'spec_helper'
+require 'typhoeus'
 
 describe Rack::Client::Handler::Typhoeus do
   def rackup(builder)
-    Rack::Client::Handler::Typhoeus # manual autoload :(
-
     @hydra = Typhoeus::Hydra.new
     builder.run Rack::Client::Handler::Typhoeus.new(@hydra)
   end
 
-  #context "Asynchronous" do
-    #include AsyncApi
+  context "Asynchronous" do
+    include AsyncApi
 
-    #def finish
-      #@hydra.run
-    #end
+    def finish
+      @hydra.run
+    end
 
-    #it_should_behave_like "Handler API"
-  #end
+    it_should_behave_like "Handler API"
+  end
 
   context "Synchronous" do
     include SyncApi
