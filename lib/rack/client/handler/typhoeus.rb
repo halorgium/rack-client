@@ -6,8 +6,8 @@ module Rack
       class Typhoeus
         include Rack::Client::DualBand
 
-        def initialize(url, hydra = Typhoeus::Hydra.new)
-          @uri, @hydra = URI.parse(url), hydra
+        def initialize(hydra = Typhoeus::Hydra.new)
+          @hydra = hydra
         end
 
         def async_call(env)
@@ -34,11 +34,11 @@ module Rack
         end
 
         def request_for(rack_request)
-          ::Typhoeus::Request.new((@uri + rack_request.path).to_s, params_for(rack_request))
+          ::Typhoeus::Request.new((rack_request.url).to_s, params_for(rack_request))
         end
 
         def process(rack_request)
-          ::Typhoeus::Request.run((@uri + rack_request.path).to_s, params_for(rack_request))
+          ::Typhoeus::Request.run((rack_request.url).to_s, params_for(rack_request))
         end
 
         def params_for(rack_request)

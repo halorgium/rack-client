@@ -6,17 +6,17 @@ shared_examples_for "Handler API" do
 
   context 'GET request' do
     it 'has the correct status code' do
-      request   { get('/hello_world') }
+      request   { get('/get/hello_world') }
       response  { status.should == 200 }
     end
 
     it 'has the correct headers' do
-      request   { get('/hello_world') }
+      request   { get('/get/hello_world') }
       response  { headers.keys.should == %w[Content-Type Date Content-Length Connection] }
     end
 
     it 'has the correct body' do
-      request   { get('/hello_world') }
+      request   { get('/get/hello_world') }
       response  { body.should == 'Hello World!' }
     end
   end
