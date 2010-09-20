@@ -12,7 +12,7 @@ module Rack
     end
 
     def self.new(*a, &block)
-      block ||= lambda {|opt| run Rack::Client::Handler::NetHTTP }
+      block ||= lambda { run Rack::Client::Handler::NetHTTP }
       Rack::Client::Simple.new(Rack::Builder.app(&block), *a)
     end
   end

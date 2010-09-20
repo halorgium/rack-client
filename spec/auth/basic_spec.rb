@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
+require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Rack::Client::Auth::Basic do
   context 'Synchronous API' do

@@ -1,7 +1,7 @@
 module Rack
   module Client
     class BodyCollection
-      instance_methods.each { |m| undef_method m unless (m =~ /^__/ || m =~ /^object_id$/ ) }
+      instance_methods.each { |m| undef_method m unless m =~ /^__/ }
 
       def initialize(&load_with_proc)
         raise ArgumentException, 'BodyCollection must be initialized with a block' unless block_given?

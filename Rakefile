@@ -27,10 +27,10 @@ spec = Gem::Specification.new do |s|
   s.test_files        = Dir["spec/**/*"]
 
   require 'bundler'
-  bundle = Bundler::Definition.build("Gemfile", "Gemfile.lock", nil)
+  bundle = Bundler::Definition.from_gemfile("Gemfile")
   bundle.dependencies.
     select { |d| d.groups.include?(:runtime) }.
-    each   { |d| s.add_dependency(d.name, d.requirement.to_s)  }
+    each   { |d| s.add_dependency(d.name, d.version_requirements.to_s)  }
 end
 
 Rake::GemPackageTask.new(spec) do |package|
