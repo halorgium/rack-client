@@ -15,16 +15,15 @@ module Rack
         def sync_call(env)
           request = Rack::Request.new(env)
 
-          connection_for(request).request(net_request_for(request), body_for(request)) do |net_response|
-            return parse(net_response).finish
-          end
+          net_response = connection_for(request).request(net_request_for(request), body_for(request))
+          parse(net_response).finish
         end
 
         def async_call(env)
           request = Rack::Request.new(env)
 
           connection_for(request).request(net_request_for(request), body_for(request)) do |net_response|
-            yield parse(net_response).finish
+            yield parse_stream(net_response).finish
           end
         end
 
@@ -66,6 +65,14 @@ module Rack
           Response.new(net_response.code.to_i, parse_headers(net_response), body)
         end
 
+        def parse_stream(net_response)
+          Response.new(net_response.code.to_i, parse_headers(net_response), &stream_for(net_response))
+        end
+
+        def stream_for(net_response)
+          BodyStream.new(net_response).method(:each)
+        end
+
         def parse_headers(net_response)
           headers = Headers.new
 
@@ -78,6 +85,18 @@ module Rack
 
         def connections
           @connections ||= {}
+        end
+
+        class BodyStream
+          def initialize(response)
+            @response = response
+          end
+
+          def each(block)
+            @response.read_body do |chunk|
+              block.call(chunk) unless chunk.empty?
+            end
+          end
         end
       end
     end

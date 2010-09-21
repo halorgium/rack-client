@@ -9,6 +9,7 @@ describe Rack::Client::Handler::NetHTTP do
     include AsyncApi
 
     it_should_behave_like "Handler API"
+    it_should_behave_like "Streamed Response API"
   end
 
   context "Synchronous" do
