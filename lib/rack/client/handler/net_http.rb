@@ -49,6 +49,12 @@ module Rack
                   when 'PUT'    then Net::HTTP::Put
                   end
 
+          # Make sure that the query string is forwarded
+          if klass == Net::HTTP::Get && request.env['QUERY_STRING'] && request.env['QUERY_STRING'] != ''
+            path = request.path + "?#{request.env['QUERY_STRING']}" 
+          else
+            path = request.path
+          end
           klass.new(request.path, Headers.from(request.env).to_http)
         end
 
