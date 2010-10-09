@@ -11,6 +11,10 @@ shared_examples_for "Handler API" do
     end
 
     it 'has the correct headers' do
+      if self.example.full_description.include?('Rack::Client::Handler::Typhoeus Synchronous')
+        pending "Typhoeus Simple bug: http://github.com/pauldix/typhoeus/issues#issue/42"
+      end
+
       request   { get('/get/hello_world') }
       response  { headers.keys.should == %w[Content-Type Date Content-Length Connection] }
     end

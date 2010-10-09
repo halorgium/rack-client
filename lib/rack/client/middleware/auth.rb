@@ -1,0 +1,5 @@
+require 'rack/client/middleware/auth/abstract/challenge'
+require 'rack/client/middleware/auth/basic'
+require 'rack/client/middleware/auth/digest/challenge'
+require 'rack/client/middleware/auth/digest/params'
+require 'rack/client/middleware/auth/digest/md5'

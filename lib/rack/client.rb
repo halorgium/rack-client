@@ -23,19 +23,9 @@ require 'rack/client/version'
 require 'rack/client/core'
 
 require 'rack/client/handler'
-require 'rack/client/dual_band'
 
 require 'rack/client/adapter'
 
-require 'rack/client/follow_redirects'
-require 'rack/client/auth/abstract/challenge'
-require 'rack/client/auth/basic'
-require 'rack/client/auth/digest/challenge'
-require 'rack/client/auth/digest/params'
-require 'rack/client/auth/digest/md5'
-
-require 'rack/client/cache'
-
-require 'rack/client/cookie_jar'
+require 'rack/client/middleware'
 
 require 'rack/client/parser'
