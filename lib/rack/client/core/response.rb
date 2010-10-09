@@ -1,0 +1,46 @@
+module Rack
+  module Client
+    class Response < Rack::Response
+      def initialize(status, headers = {}, body = [], &block)
+        @status = status.to_i
+        @header = Utils::HeaderHash.new({"Content-Type" => "text/html"}.
+                                        merge(headers))
+        @body   = body
+        @loaded = false
+
+        @stream = block if block_given?
+      end
+
+      def each(&block)
+        load_body(&block)
+
+        @body
+      end
+
+      def body
+        load_body
+
+        @body
+      end
+
+      def load_body(&block)
+        return if @body_loaded
+        body = []
+
+        @body.each do |chunk|
+          body << chunk
+          yield chunk if block_given?
+        end
+
+        if @stream
+          @stream.call(lambda do |chunk|
+            body << chunk
+            yield chunk if block_given?
+          end)
+        end
+
+        @body, @body_loaded = body, true
+      end
+    end
+  end
+end

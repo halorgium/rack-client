@@ -20,9 +20,10 @@ end
 
 require 'rack/client/version'
 
+require 'rack/client/core'
+
 require 'rack/client/handler'
 require 'rack/client/dual_band'
-require 'rack/client/response'
 require 'rack/client/headers'
 
 require 'rack/client/adapter'

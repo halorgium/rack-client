@@ -14,7 +14,7 @@ describe Rack::Client::Response do
       body = %w[ This is a streamed response ]
       check = body.dup
 
-      response = Rack::Client::Response.new(200) {|callback| body.each {|chunk| callback.call(chunk) } }
+      response = Rack::Client::Response.new(200) {|block| body.each(&block) }
 
       response.each do |part|
         part.should == check.shift
@@ -29,7 +29,7 @@ describe Rack::Client::Response do
       body = %w[ This is also a streamed response ]
       check = body.dup
 
-      response = Rack::Client::Response.new(200) {|callback| body.each {|chunk| callback.call(chunk) } }
+      response = Rack::Client::Response.new(200) {|block| body.each(&block) }
 
       response.each {|chunk| }
 
@@ -40,7 +40,7 @@ describe Rack::Client::Response do
       existing, streamed = %w[ This is mostly ], %w[ a streamed response ]
       check = existing + streamed
 
-      response = Rack::Client::Response.new(200, {}, existing) {|callback| streamed.each {|chunk| callback.call(chunk) } }
+      response = Rack::Client::Response.new(200, {}, existing) {|block| streamed.each(&block) }
 
       response.each do |part|
         part.should == check.shift
@@ -53,7 +53,7 @@ describe Rack::Client::Response do
       body = %w[ This should only appear once ]
       check = body.dup
 
-      response = Rack::Client::Response.new(200) {|callback| body.each {|chunk| callback.call(chunk) } }
+      response = Rack::Client::Response.new(200) {|block| body.each(&block) }
 
       response.each {|chunk| }
 
@@ -70,7 +70,7 @@ describe Rack::Client::Response do
       body = %w[ This is sorta streamed ]
       check = body.dup
 
-      response = Rack::Client::Response.new(200) {|callback| body.each {|chunk| callback.call(chunk) } }
+      response = Rack::Client::Response.new(200) {|block| body.each(&block) }
 
       response.body.should == check
     end
