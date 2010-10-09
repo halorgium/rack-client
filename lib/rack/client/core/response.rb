@@ -28,14 +28,18 @@ module Rack
         body = []
 
         @body.each do |chunk|
-          body << chunk
-          yield chunk if block_given?
+          unless chunk.empty?
+            body << chunk
+            yield chunk if block_given?
+          end
         end
 
         if @stream
           @stream.call(lambda do |chunk|
-            body << chunk
-            yield chunk if block_given?
+            unless chunk.empty?
+              body << chunk
+              yield chunk if block_given?
+            end
           end)
         end
 

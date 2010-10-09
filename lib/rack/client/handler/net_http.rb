@@ -66,11 +66,7 @@ module Rack
         end
 
         def parse_stream(net_response)
-          Response.new(net_response.code.to_i, parse_headers(net_response), &stream_for(net_response))
-        end
-
-        def stream_for(net_response)
-          BodyStream.new(net_response).method(:each)
+          Response.new(net_response.code.to_i, parse_headers(net_response)) {|block| net_response.read_body(&block) }
         end
 
         def parse_headers(net_response)
@@ -85,18 +81,6 @@ module Rack
 
         def connections
           @connections ||= {}
-        end
-
-        class BodyStream
-          def initialize(response)
-            @response = response
-          end
-
-          def each(block)
-            @response.read_body do |chunk|
-              block.call(chunk) unless chunk.empty?
-            end
-          end
         end
       end
     end

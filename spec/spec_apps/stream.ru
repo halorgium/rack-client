@@ -4,4 +4,6 @@ class SlowArray < Array
   end
 end
 
+use Rack::Chunked # net/http is a POS
+
 run lambda { [200, {}, SlowArray[*%w[ this is a stream ]]] }
