@@ -6,7 +6,7 @@ module Rack
       end
 
       def initialize(headers = {})
-        super
+        super()
         merge!(headers)
       end
 
