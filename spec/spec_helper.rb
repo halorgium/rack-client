@@ -6,11 +6,14 @@ Bundler.require(:test)
 dir = File.expand_path(File.dirname(__FILE__))
 
 Dir["#{dir}/shared/*.rb"].each {|shared| require shared }
+Dir["#{dir}/helpers/*.rb"].each {|helper| require helper }
 
 RSpec.configure do |config|
   config.color_enabled = true
   #config.filter_run :focused => true
   #config.run_all_when_everything_filtered = true
+  config.include(HandlerHelper)
+  config.include(TyphoeusHelper)
 
   config.before(:all) do
     configru = dir + '/spec_config.ru'

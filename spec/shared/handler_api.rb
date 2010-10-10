@@ -1,9 +1,5 @@
 shared_examples_for "Handler API" do
 
-  subject do
-    Rack::Client.new(@base_url, &method(:rackup))
-  end
-
   context 'GET request' do
     it 'has the correct status code' do
       request   { get('/get/hello_world') }

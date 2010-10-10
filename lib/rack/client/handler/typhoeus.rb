@@ -6,7 +6,7 @@ module Rack
       class Typhoeus
         include Rack::Client::DualBand
 
-        def initialize(hydra = Typhoeus::Hydra.new)
+        def initialize(hydra = ::Typhoeus::Hydra.new)
           @hydra = hydra
         end
 
