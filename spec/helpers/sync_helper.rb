@@ -1,4 +1,4 @@
-module SyncApi
+module SyncHelper
   def request(&b)
     @_response = subject.instance_eval(&b)
   end

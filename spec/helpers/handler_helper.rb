@@ -1,24 +1,44 @@
 module HandlerHelper
-  SYNC_HANDLERS = [
-    Rack::Client::Handler::NetHTTP,
-    Rack::Client::Handler::Typhoeus
-  ]
-
   module Ext
-    def setup_contexts_for(middleware, &block)
-      SYNC_HANDLERS.each do |handler|
-        context "#{handler.name} Async" do
-          include SyncApi
 
-          subject do
-            Rack::Client.new(@base_url) do |builder|
-              builder.use middleware
-              builder.run handler.new
-            end
-          end
+    def async_handler_map(key)
+      {
+        Rack::Client::Handler::EmHttp   => EmHttpHelper::Async,
+        Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Async,
+        Rack::Client::Handler::Typhoeus => TyphoeusHelper::Async,
+      }[key]
+    end
 
-          instance_eval(&block)
+    def sync_handler_map(key)
+      {
+        Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
+        Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync
+      }[key]
+    end
+
+    def async_handler_context(handler, &block)
+      context "Asynchronous" do
+        include AsyncHelper
+        include async_handler_map(handler)
+
+        subject { build_subject }
+
+        around do |group|
+          run_around(group) if respond_to?(:run_around)
         end
+
+        instance_eval(&block)
+      end
+    end
+
+    def sync_handler_context(handler, &block)
+      context "Synchronous" do
+        include SyncHelper
+        include sync_handler_map(handler)
+
+        subject { build_subject }
+
+        instance_eval(&block)
       end
     end
   end

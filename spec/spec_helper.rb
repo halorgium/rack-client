@@ -13,7 +13,6 @@ RSpec.configure do |config|
   #config.filter_run :focused => true
   #config.run_all_when_everything_filtered = true
   config.include(HandlerHelper)
-  config.include(TyphoeusHelper)
 
   config.before(:all) do
     configru = dir + '/spec_config.ru'

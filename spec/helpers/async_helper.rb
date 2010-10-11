@@ -1,4 +1,4 @@
-module AsyncApi
+module AsyncHelper
   class AsyncProxy < Struct.new(:subject, :callback)
     def method_missing(*a)
       subject.send(*a, &callback)

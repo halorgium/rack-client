@@ -1,38 +1,24 @@
 module TyphoeusHelper
-  extend self
 
-  module Ext
-    def typhoeus_async_context(*middlewares, &block)
-      context "Asynchronous" do
-        include AsyncApi
+  module Async
+    def build_subject
+      @hydra = hydra = Typhoeus::Hydra.new
 
-        define_method(:middlewares) { middlewares }
-
-        def rackup(builder)
-          @hydra = Typhoeus::Hydra.new
-
-          middlewares.each do |middleware|
-            builder.use middleware
-          end
-
-          builder.run Rack::Client::Handler::Typhoeus.new(@hydra)
-        end
-
-        def finish
-          @hydra.run
-        end
-
-        subject do
-          Rack::Client.new(@base_url, &method(:rackup))
-        end
-
-        instance_eval(&block)
+      Rack::Client.new(@base_url) do |builder|
+        builder.run Rack::Client::Handler::Typhoeus.new(hydra)
       end
+    end
+
+    def finish
+      @hydra.run
     end
   end
 
-  def self.included(context)
-    context.extend Ext
+  module Sync
+    def build_subject
+      Rack::Client.new(@base_url) do |builder|
+        builder.run Rack::Client::Handler::Typhoeus.new
+      end
+    end
   end
-
 end
