@@ -12,7 +12,8 @@ module HandlerHelper
     def sync_handler_map
       {
         Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
-        Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync
+        Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync,
+        Rack::Client::Handler::Excon    => ExconHelper::Sync
       }
     end
 
