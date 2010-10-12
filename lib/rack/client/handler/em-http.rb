@@ -26,7 +26,7 @@ module Rack
         end
 
         def connection(url)
-          @connection ||= EventMachine::HttpRequest.new(url)
+          EventMachine::HttpRequest.new(url)
         end
 
         def request_options(request)
