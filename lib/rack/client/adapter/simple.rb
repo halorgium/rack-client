@@ -11,8 +11,8 @@ module Rack
                                   :set_cookie, :status, :to_a, :write
         def_delegator  :response, :body, :chunked_body
 
-        def initialize(response)
-          @response, @body = response, nil
+        def initialize(*tuple)
+          @response, @body = Response.new(*tuple), nil
         end
 
         def body
@@ -51,9 +51,9 @@ module Rack
       def request(method, url, headers = {}, body_or_params = nil, query_params = {})
         tuple = request_tuple(url, headers, body_or_params, query_params)
         if block_given?
-          super(method, *tuple) {|*tuple| yield CollapsedResponse.new(tuple.last) }
+          super(method, *tuple) {|*tuple| yield CollapsedResponse.new(*tuple) }
         else
-          CollapsedResponse.new(super(method, *tuple).last)
+          CollapsedResponse.new(*super(method, *tuple))
         end
       end
 
