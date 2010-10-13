@@ -24,7 +24,7 @@ module Rack
           elsif response.cacheable?
             store(request, response)
           else
-            pass
+            pass(request)
           end
 
           trace = @trace.join(', ')
@@ -46,7 +46,7 @@ module Rack
               elsif response.cacheable?
                 store(request, response)
               else
-                pass
+                pass(env)
               end
 
               trace = @trace.join(', ')
@@ -66,7 +66,7 @@ module Rack
             entry
           rescue Exception => e
             log_error(e)
-            return pass
+            return pass(request)
           end
         end
 
@@ -88,6 +88,15 @@ module Rack
         # Record that an event took place.
         def record(event)
           @trace << event
+        end
+
+        def pass(request)
+          record :pass
+          forward(request)
+        end
+
+        def forward(request)
+          Response.new(*@app.call(request.env))
         end
       end
     end

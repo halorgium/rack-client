@@ -56,6 +56,25 @@ module Rack
         def vary?
           ! vary.nil?
         end
+
+        def fresh?
+          ttl && ttl > 0
+        end
+
+        def ttl
+          max_age - age if max_age
+        end
+
+        def max_age
+          cache_control.shared_max_age ||
+            cache_control.max_age ||
+            (expires && (expires - date))
+        end
+
+        def expires
+          headers['Expires'] && Time.httpdate(headers['Expires'])
+        end
+
       end
     end
   end

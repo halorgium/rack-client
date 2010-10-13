@@ -24,7 +24,7 @@ module Rack
       end
 
       def load_body(&block)
-        return if @body_loaded
+        return @body.each(&block) if @body_loaded
         body = []
 
         @body.each do |chunk|
