@@ -18,7 +18,7 @@ module HandlerHelper
     end
 
     def async_handler_context(handler, *middlewares, &block)
-      context "Asynchronous" do
+      context "#{handler.name} Asynchronous" do
         include AsyncHelper
         include async_handler_map[handler]
 
@@ -34,7 +34,7 @@ module HandlerHelper
     end
 
     def sync_handler_context(handler, *middlewares, &block)
-      context "Synchronous" do
+      context "#{handler.name} Synchronous" do
         include SyncHelper
         include sync_handler_map[handler]
 

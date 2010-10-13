@@ -30,11 +30,18 @@ module Rack
 
         def parse(typhoeus_response)
           body = (typhoeus_response.body.nil? || typhoeus_response.body.empty?) ? [] : StringIO.new(typhoeus_response.body)
-          Response.new(typhoeus_response.code, Headers.new(typhoeus_response.headers_hash).to_http, body)
+          Response.new(typhoeus_response.code, headers_for(typhoeus_response).to_http, body)
         end
 
         def request_for(rack_request)
           ::Typhoeus::Request.new((rack_request.url).to_s, params_for(rack_request))
+        end
+
+        def headers_for(typhoeus_response)
+          headers = typhoeus_response.headers_hash
+          headers.reject! {|k,v| v.nil? }           # Typhoeus Simple bug: http://github.com/pauldix/typhoeus/issues#issue/42
+
+          Headers.new(headers)
         end
 
         def process(rack_request)
