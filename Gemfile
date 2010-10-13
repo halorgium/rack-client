@@ -20,7 +20,7 @@ group :test do
 
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
-  gem 'rspec',    '>=2.0.0.beta'
+  gem 'rspec',    '>=2.0.0'
   gem 'ruby-debug'
   gem 'mongrel'
   gem 'cgi_multipart_eof_fix'
