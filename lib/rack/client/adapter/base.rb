@@ -39,7 +39,7 @@ module Rack
 
         env.update 'PATH_INFO'    => path_info
         env.update 'REQUEST_URI'  => uri.to_s
-        env.update 'SERVER_NAME'  => uri.host
+        env.update 'SERVER_NAME'  => uri.host.to_s
         env.update 'SERVER_PORT'  => uri.port.to_s
         env.update 'SCRIPT_NAME'  => ''
         env.update 'QUERY_STRING' => uri.query.to_s
@@ -51,7 +51,7 @@ module Rack
 
         env.update 'rack.input'         => input
         env.update 'rack.errors'        => StringIO.new
-        env.update 'rack.url_scheme'    => uri.scheme
+        env.update 'rack.url_scheme'    => uri.scheme || 'http'
         env.update 'rack.version'       => Rack::VERSION
         env.update 'rack.multithread'   => true
         env.update 'rack.multiprocess'  => true
