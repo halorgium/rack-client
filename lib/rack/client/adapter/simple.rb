@@ -78,7 +78,7 @@ module Rack
       end
 
       def http_host_for(uri)
-        unless uri.to_s.include?(":#{uri.port}")
+        if uri.to_s.include?(":#{uri.port}")
           [uri.host, uri.port].join(':')
         else
           uri.host
