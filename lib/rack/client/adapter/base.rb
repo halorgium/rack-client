@@ -35,7 +35,6 @@ module Rack
         uri = URI.parse(url)
 
         path_info = uri.path.empty? ? '/' : uri.path
-        path_info += '?' + uri.query unless uri.query.nil? || uri.query.empty?
 
         env.update 'PATH_INFO'    => path_info
         env.update 'REQUEST_URI'  => uri.to_s
