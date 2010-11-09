@@ -1,8 +1,6 @@
 source "http://rubygems.org"
 
-group :runtime do
-  gem 'rack', ">=1.0.0"
-end
+gemspec
 
 group :optional do
   gem 'rack-cache', :require => 'rack/cache'
@@ -10,14 +8,6 @@ group :optional do
 end
 
 group :test do
-  group :examples do
-    gem 'excon'
-    gem 'em-http-request'
-    gem 'eventmachine'
-    gem 'typhoeus'
-    gem 'json'
-  end
-
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
   gem 'rspec',    '>=2.0.0'
