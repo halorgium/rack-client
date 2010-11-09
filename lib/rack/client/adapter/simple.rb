@@ -74,8 +74,17 @@ module Rack
 
       def build_env(request_method, url, headers = {}, body = nil)
         uri = @base_uri.nil? ? URI.parse(url) : @base_uri + url
-        super(request_method, uri.to_s, headers, body)
+        {'HTTP_HOST' => http_host_for(uri)}.merge(super(request_method, uri.to_s, headers, body))
       end
+
+      def http_host_for(uri)
+        unless uri.to_s.include?(":#{uri.port}")
+          [uri.host, uri.port].join(':')
+        else
+          uri.host
+        end
+      end
+
     end
   end
 end
