@@ -7,8 +7,12 @@ shared_examples_for "Handler API" do
     end
 
     it 'has the correct headers' do
-      request   { get('/get/hello_world') }
-      response  { headers.keys.should == %w[Content-Type Date Content-Length Connection] }
+      request  { get('/get/hello_world') }
+      response do
+        %w[Content-Type Date Content-Length Connection].each do |header|
+          headers.keys.include?(header).should == true
+        end
+      end
     end
 
     it 'has the correct body' do

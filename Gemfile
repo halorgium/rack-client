@@ -11,8 +11,11 @@ group :test do
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
   gem 'rspec',    '>=2.0.0'
-  gem 'ruby-debug'
-  gem 'mongrel'
-  gem 'cgi_multipart_eof_fix'
   gem 'realweb'
+
+  unless RUBY_VERSION == '1.9.2'
+    gem 'ruby-debug'
+    gem 'mongrel'
+    gem 'cgi_multipart_eof_fix'
+  end
 end

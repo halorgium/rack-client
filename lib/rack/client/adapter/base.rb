@@ -43,13 +43,16 @@ module Rack
         env.update 'SCRIPT_NAME'  => ''
         env.update 'QUERY_STRING' => uri.query.to_s
 
-        input = case body
-                when nil        then StringIO.new
-                when String     then StringIO.new(body)
-                end
+        input, errors = StringIO.new(body.to_s), StringIO.new
+
+        if input.respond_to?(:set_encoding)
+          input.set_encoding('ASCII-8BIT')
+          errors.set_encoding('ASCII-8BIT')
+        end
+
 
         env.update 'rack.input'         => input
-        env.update 'rack.errors'        => StringIO.new
+        env.update 'rack.errors'        => errors
         env.update 'rack.url_scheme'    => uri.scheme || 'http'
         env.update 'rack.version'       => Rack::VERSION
         env.update 'rack.multithread'   => true
