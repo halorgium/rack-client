@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'stringio'
 require 'uri'
 require 'rack'
 
