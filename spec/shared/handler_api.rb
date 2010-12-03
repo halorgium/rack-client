@@ -19,6 +19,11 @@ shared_examples_for "Handler API" do
       request   { get('/get/hello_world') }
       response  { body.should == 'Hello World!' }
     end
+
+    it 'has the correct query string' do
+      request   { get('/get/params?one=hello&two=goodbye') }
+      response  { body.should == 'hello goodbye' }
+    end
   end
 
   context 'DELETE request' do

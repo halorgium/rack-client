@@ -48,7 +48,7 @@ module Rack
                   when 'PUT'    then Net::HTTP::Put
                   end
 
-          klass.new(request.path, Headers.from(request.env).to_http)
+          klass.new(request.fullpath, Headers.from(request.env).to_http)
         end
 
         def body_for(request)
