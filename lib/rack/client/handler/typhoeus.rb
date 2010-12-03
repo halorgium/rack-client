@@ -45,15 +45,23 @@ module Rack
         end
 
         def process(rack_request)
-          ::Typhoeus::Request.run((rack_request.url).to_s, params_for(rack_request))
+          ::Typhoeus::Request.run((url_for(rack_request)).to_s, params_for(rack_request))
+        end
+
+        def url_for(rack_request)
+          rack_request.url.split('?').first
         end
 
         def params_for(rack_request)
           {
             :method => rack_request.request_method.downcase.to_sym,
             :headers => Headers.from(rack_request.env).to_http,
-            :params => {}
+            :params => query_params_for(rack_request)
           }.merge(body_params_for(rack_request))
+        end
+
+        def query_params_for(rack_request)
+          Rack::Utils.parse_nested_query(rack_request.query_string)
         end
 
         def body_params_for(rack_request)
