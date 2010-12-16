@@ -74,7 +74,10 @@ module Rack
 
       def build_env(request_method, url, headers = {}, body = nil)
         uri = @base_uri.nil? ? URI.parse(url) : @base_uri + url
-        {'HTTP_HOST' => http_host_for(uri)}.merge(super(request_method, uri.to_s, headers, body))
+        {
+          'HTTP_HOST'       => http_host_for(uri),
+          'HTTP_USER_AGENT' => http_user_agent
+        }.merge(super(request_method, uri.to_s, headers, body))
       end
 
       def http_host_for(uri)
@@ -85,6 +88,9 @@ module Rack
         end
       end
 
+      def http_user_agent
+        "rack-client #{VERSION} (app: #{@app.class})"
+      end
     end
   end
 end
