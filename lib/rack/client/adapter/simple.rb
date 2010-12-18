@@ -57,7 +57,6 @@ module Rack
         end
       end
 
-
       def request_tuple(url, headers = {}, body_or_params = nil, query_params = {}, &block)
         query_hash = Hash === query_params ? query_params : Utils.build_query(query_params)
 
