@@ -1,12 +1,27 @@
 require 'spec_helper'
 
 describe Rack::Client::Simple do
-  describe "HTTP_USER_AGENT" do
-    it 'adds the user agent header to requests' do
-      app = lambda {|env| [200, {}, [env['HTTP_USER_AGENT']]] }
 
+  describe "request headers" do
+    let(:app) { lambda {|env| [200, {}, [env['HTTP_X_FOO']]] } }
+
+    it 'will be rackified (e.g. HTTP_*)' do
+      client = Rack::Client::Simple.new(app)
+      client.get('/', 'X-Foo' => 'bar').body.should == 'bar'
+    end
+  end
+
+  describe "HTTP_USER_AGENT" do
+    let(:app) { lambda {|env| [200, {}, [env['HTTP_USER_AGENT']]] } }
+
+    it 'adds the user agent header to requests' do
       client = Rack::Client::Simple.new(app)
       client.get('/hitme').body.should == "rack-client #{Rack::Client::VERSION} (app: Proc)"
+    end
+
+    it 'can be overridden' do
+      client = Rack::Client::Simple.new(app)
+      client.get('/foo', 'User-Agent' => 'IE6').body.should == 'IE6'
     end
   end
 
@@ -21,6 +36,11 @@ describe Rack::Client::Simple do
     it 'adds the host and port for explicit ports in the REQUEST_URI' do
       client = Rack::Client::Simple.new(app, 'http://example.org:81/')
       client.get('/foo').body.should == 'example.org:81'
+    end
+
+    it 'can be overridden' do
+      client = Rack::Client::Simple.new(app, 'http://example.org/')
+      client.get('/foo', 'Host' => '127.0.0.1').body.should == '127.0.0.1'
     end
   end
 
