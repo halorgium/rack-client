@@ -22,6 +22,7 @@ module HandlerHelper
         include AsyncHelper
         include async_handler_map[handler]
 
+        let(:handler) { handler }
 
         subject { build_subject(*middlewares) }
 
@@ -37,6 +38,8 @@ module HandlerHelper
       context "#{handler.name} Synchronous" do
         include SyncHelper
         include sync_handler_map[handler]
+
+        let(:handler) { handler }
 
         subject { build_subject(*middlewares) }
 
