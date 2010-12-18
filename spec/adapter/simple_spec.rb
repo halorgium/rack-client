@@ -10,6 +10,20 @@ describe Rack::Client::Simple do
     end
   end
 
+  describe "HTTP_HOST" do
+    let(:app) { lambda {|env| [200, {}, [env['HTTP_HOST']]]} }
+
+    it 'adds the host as the hostname of REQUEST_URI' do
+      client = Rack::Client::Simple.new(app, 'http://example.org/')
+      client.get('/foo').body.should == 'example.org'
+    end
+
+    it 'adds the host and port for explicit ports in the REQUEST_URI' do
+      client = Rack::Client::Simple.new(app, 'http://example.org:81/')
+      client.get('/foo').body.should == 'example.org:81'
+    end
+  end
+
   describe "REQUEST_URI" do
     let(:app) { lambda {|env| [200, {}, [env['REQUEST_URI']]]} }
 
