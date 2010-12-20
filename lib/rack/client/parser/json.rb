@@ -6,6 +6,7 @@ module Rack
       class JSON < Parser::Base
 
         content_type 'application', 'json'
+        content_type 'application', 'json', 'charset=utf-8'
 
         def encode(input)
           output = StringIO.new
