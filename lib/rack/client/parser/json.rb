@@ -48,7 +48,7 @@ module Rack
         end
       end
 
-      Yaml = YAML
+      Json = JSON
     end
   end
 end
