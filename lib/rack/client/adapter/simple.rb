@@ -2,6 +2,32 @@ module Rack
   module Client
     class Simple < Base
 
+      def self.new(app, *a, &b)
+        app = inject_middleware(app) if middlewares.any?
+
+        super(app, *a, &b)
+      end
+
+      def self.middlewares
+        @middlewares ||= []
+      end
+
+      def self.use(middleware, *args)
+        middlewares << [middleware, args]
+      end
+
+      def self.inject_middleware(app)
+        middlewares = self.middlewares
+
+        Rack::Builder.app do |builder|
+          middlewares.each do |(middleware, args)|
+            builder.use middleware, *args
+          end
+
+          builder.run app
+        end
+      end
+
       class CollapsedResponse < Response
         extend Forwardable
         attr_accessor :response

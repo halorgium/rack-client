@@ -57,4 +57,21 @@ describe Rack::Client::Simple do
       client.get('http://example.com/bar').body.should == 'http://example.com/bar'
     end
   end
+
+  describe '.use' do
+    it 'injects a middleware' do
+      middleware = Struct.new(:app) do
+        def call(env)
+          [200, {}, 'Hello Middleware!']
+        end
+      end
+
+      klass = Class.new(Rack::Client::Simple) do
+        use middleware
+      end
+
+      client = klass.new(lambda {|_| [500, {}, 'FAIL'] })
+      client.get('/').body.should == 'Hello Middleware!'
+    end
+  end
 end
