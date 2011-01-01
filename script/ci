@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+set -x
+
+bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
+source "$HOME/.rvm/scripts/rvm"
+
+ruby_version="$1"
+
+rvm install $ruby_version
+rvm use --create $ruby_version@$(date +%s)
+
+gem install bundler --no-rdoc --no-ri
+bundle install
+
+bundle exec rake 2>&1
