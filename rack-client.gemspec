@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack', '>=1.0.0'
 
   s.add_development_dependency 'excon'
-  s.add_development_dependency 'em-http-request'
-  s.add_development_dependency 'typhoeus'
+  s.add_development_dependency 'em-http-request' unless (defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby')
+  s.add_development_dependency 'typhoeus' unless (defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby')
   s.add_development_dependency 'json'
 end

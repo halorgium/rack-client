@@ -15,4 +15,3 @@ gem install bundler --no-rdoc --no-ri
 bundle install
 
 bundle exec rake 2>&1
-
