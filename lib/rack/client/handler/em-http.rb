@@ -41,6 +41,9 @@ module Rack
                              end
           end
 
+          headers = Headers.from(request.env).to_http
+          options[:head] = headers unless headers.empty?
+
           options
         end
 
