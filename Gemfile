@@ -10,10 +10,7 @@ end
 group :test do
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
-  gem 'rspec',      :git => 'git://github.com/rspec/rspec.git'
-  gem 'rspec-core', :git => 'git://github.com/rspec/rspec-core.git'
-  gem 'rspec-mocks', :git => 'git://github.com/rspec/rspec-mocks.git'
-  gem 'rspec-expectations', :git => 'git://github.com/rspec/rspec-expectations.git'
+  gem 'rspec',    '>=2.0.0'
   gem 'realweb'
 end
 
