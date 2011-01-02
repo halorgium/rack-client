@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/halorgium/rack-client"
   s.summary     = "A client wrapper around a Rack app or HTTP"
   s.description = s.summary
-  s.files       = %w[History.txt LICENSE README.textile Rakefile] + Dir["lib/**/*"] + Dir["demo/**/*"]
+  s.files       = %w[History.txt LICENSE README.textile Rakefile] + Dir["lib/**/*.rb"] + Dir["demo/**/*.rb"]
 
   s.add_dependency 'rack', '>=1.0.0'
 
