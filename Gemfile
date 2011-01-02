@@ -18,7 +18,10 @@ if defined?(RUBY_ENGINE)
   when 'rbx'
     gem 'mongrel'
     group :test do
-      gem 'rspec', '>=2.0.0'
+      gem 'rspec',      :git => 'git://github.com/rspec/rspec.git'
+      gem 'rspec-core', :git => 'git://github.com/rspec/rspec-core.git'
+      gem 'rspec-mocks', :git => 'git://github.com/rspec/rspec-mocks.git'
+      gem 'rspec-expectations', :git => 'git://github.com/rspec/rspec-expectations.git'
     end
   when 'jruby'
     group :test do

@@ -2,7 +2,6 @@ require 'rake'
 require 'rake/clean'
 require 'rspec/core/rake_task'
 
-
 $:.unshift File.join(File.dirname(__FILE__), 'lib')
 require 'rack/client/version'
 
