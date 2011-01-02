@@ -9,14 +9,14 @@ Dir["#{dir}/shared/*.rb"].each {|shared| require shared }
 Dir["#{dir}/helpers/*.rb"].each {|helper| require helper }
 
 RSpec.configure do |config|
-  config.color_enabled = true
+  config.color_enabled = config.tty = true
   #config.filter_run :focused => true
   #config.run_all_when_everything_filtered = true
   config.include(HandlerHelper)
 
   config.before(:all) do
     configru = dir + '/spec_config.ru'
-    @server = RealWeb.start_server_in_thread(configru)
-    @base_url = "http://localhost:#{@server.port}"
+    $server ||= RealWeb.start_server_in_thread(configru)
+    @base_url = "http://localhost:#{$server.port}"
   end
 end

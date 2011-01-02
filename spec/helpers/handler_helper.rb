@@ -2,19 +2,34 @@ module HandlerHelper
   module Ext
 
     def async_handler_map
-      {
-        Rack::Client::Handler::EmHttp   => EmHttpHelper::Async,
-        Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Async,
-        Rack::Client::Handler::Typhoeus => TyphoeusHelper::Async,
-      }
+      case defined?(RUBY_ENGINE) && RUBY_ENGINE
+      when 'jruby' then
+        {
+          Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Async,
+        }
+      else
+        {
+          Rack::Client::Handler::EmHttp   => EmHttpHelper::Async,
+          Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Async,
+          Rack::Client::Handler::Typhoeus => TyphoeusHelper::Async,
+        }
+      end
     end
 
     def sync_handler_map
-      {
-        Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
-        Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync,
-        Rack::Client::Handler::Excon    => ExconHelper::Sync
-      }
+      case defined?(RUBY_ENGINE) && RUBY_ENGINE
+      when 'jruby' then
+        {
+          Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
+          Rack::Client::Handler::Excon    => ExconHelper::Sync
+        }
+      else
+        {
+          Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
+          Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync,
+          Rack::Client::Handler::Excon    => ExconHelper::Sync
+        }
+      end
     end
 
     def async_handler_context(handler, *middlewares, &block)
