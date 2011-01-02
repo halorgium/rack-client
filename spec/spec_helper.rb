@@ -16,7 +16,7 @@ RSpec.configure do |config|
 
   config.before(:all) do
     configru = dir + '/spec_config.ru'
-    @server = RealWeb.start_server_in_thread(configru)
-    @base_url = "http://localhost:#{@server.port}"
+    $server ||= RealWeb.start_server_in_thread(configru)
+    @base_url = "http://localhost:#{$server.port}"
   end
 end
