@@ -62,7 +62,7 @@ describe Rack::Client::Simple do
     it 'injects a middleware' do
       middleware = Struct.new(:app) do
         def call(env)
-          [200, {}, 'Hello Middleware!']
+          [200, {}, ['Hello Middleware!']]
         end
       end
 
@@ -70,7 +70,7 @@ describe Rack::Client::Simple do
         use middleware
       end
 
-      client = klass.new(lambda {|_| [500, {}, 'FAIL'] })
+      client = klass.new(lambda {|_| [500, {}, ['FAIL']] })
       client.get('/').body.should == 'Hello Middleware!'
     end
   end

@@ -30,6 +30,19 @@ if defined?(RUBY_ENGINE)
       gem 'rspec-mocks', :git => 'git://github.com/rspec/rspec-mocks.git'
       gem 'rspec-expectations', :git => 'git://github.com/rspec/rspec-expectations.git'
     end
+  when 'ruby'
+    case RUBY_VERSION
+    when '1.9.2'
+      group :test do
+        gem 'rspec', '>=2.0.0'
+      end
+    when '1.8.7'
+      gem 'ruby-debug'
+      gem 'mongrel'
+      group :test do
+        gem 'rspec', '>=2.0.0'
+      end
+    end
   end
 else
   gem 'ruby-debug'
