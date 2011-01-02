@@ -4,11 +4,13 @@ module Rack
       class Basic
         include Rack::Client::DualBand
 
-        def initialize(app, username, password)
-          @app, @username, @password = app, username, password
+        def initialize(app, username, password, force = false)
+          @app, @username, @password, @force = app, username, password, force
         end
 
         def sync_call(env)
+          return authorized_call(env) if @force
+
           request   = Rack::Request.new(env)
           response  = Response.new(*@app.call(env))
           challenge = Basic::Challenge.new(request, response)
@@ -21,6 +23,8 @@ module Rack
         end
 
         def async_call(env, &b)
+          return authorized_call(env, &b) if @force
+
           @app.call(env) do |response_parts|
             request   = Rack::Request.new(env)
             response  = Response.new(*response_parts)
@@ -43,7 +47,7 @@ module Rack
         end
 
         def encoded_login
-          ["#{@username}:#{@password}"].pack("m*")
+          ["#{@username}:#{@password}"].pack("m*").chomp
         end
 
         class Challenge < Abstract::Challenge
