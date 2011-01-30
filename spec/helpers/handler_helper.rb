@@ -13,7 +13,8 @@ module HandlerHelper
       {
         Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
         Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync,
-        Rack::Client::Handler::Excon    => ExconHelper::Sync
+        Rack::Client::Handler::Excon    => ExconHelper::Sync,
+        Rack::Client::Handler::EmHttp   => EmHttpHelper::Sync,
       }
     end
 
@@ -42,6 +43,10 @@ module HandlerHelper
         let(:handler) { handler }
 
         subject { build_subject(*middlewares) }
+
+        around do |group|
+          run_around(group) if respond_to?(:run_around)
+        end
 
         instance_eval(&block)
       end

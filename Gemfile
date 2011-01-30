@@ -17,5 +17,7 @@ group :test do
     gem 'ruby-debug'
     gem 'mongrel'
     gem 'cgi_multipart_eof_fix'
+  else
+    gem 'em-synchrony'
   end
 end
