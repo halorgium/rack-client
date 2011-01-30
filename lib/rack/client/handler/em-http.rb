@@ -6,6 +6,11 @@ module Rack
       class EmHttp
         include Rack::Client::DualBand
 
+        class << self
+          extend Forwardable
+          def_delegator :new, :call
+        end
+
         def sync_call(env)
           raise("Synchronous API is not supported for EmHttp Handler") unless block_given?
         end
