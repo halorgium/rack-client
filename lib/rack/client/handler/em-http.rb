@@ -12,7 +12,13 @@ module Rack
         end
 
         def sync_call(env)
-          raise("Synchronous API is not supported for EmHttp Handler") unless block_given?
+          if defined?(EventMachine::Synchrony)
+            request = Rack::Request.new(env)
+            resp = connection(request.url).send(request.request_method.downcase, request_options(request))
+            parse(resp).finish
+          else
+            raise("Synchronous API is not supported for EmHttp Handler") unless block_given?
+          end
         end
 
         def async_call(env)
