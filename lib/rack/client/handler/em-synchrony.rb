@@ -1,9 +1,10 @@
 require 'em-http'
+require 'em-synchrony'
 
 module Rack
   module Client
     module Handler
-      class EmHttp
+      class EmSynchrony
         include Rack::Client::DualBand
 
         class << self
@@ -12,22 +13,17 @@ module Rack
         end
 
         def sync_call(env)
-          raise("Synchronous API is not supported for EmHttp Handler")
+          request, fiber = Rack::Request.new(env), Fiber.current
+
+          conn = connection(request.url).send(request.request_method.downcase.to_sym, request_options(request))
+          conn.callback { fiber.resume(conn) }
+          conn.errback  { fiber.resume(conn) }
+
+          parse(Fiber.yield).finish
         end
 
         def async_call(env)
-          request = Rack::Request.new(env)
-
-          EM.schedule do
-            em_http = connection(request.url).send(request.request_method.downcase, request_options(request))
-            em_http.callback do
-              yield parse(em_http).finish
-            end
-
-            em_http.errback do
-              yield parse(em_http).finish
-            end
-          end
+          raise("Asynchronous API is not supported for EmSynchrony Handler")
         end
 
         def connection(url)
