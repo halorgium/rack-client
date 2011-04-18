@@ -10,12 +10,17 @@ module HandlerHelper
     end
 
     def sync_handler_map
-      {
-        Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
-        Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync,
-        Rack::Client::Handler::Excon    => ExconHelper::Sync,
-        Rack::Client::Handler::EmHttp   => EmHttpHelper::Sync,
-      }
+      handler = {
+          Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Sync,
+          Rack::Client::Handler::Typhoeus => TyphoeusHelper::Sync,
+          Rack::Client::Handler::Excon    => ExconHelper::Sync,
+        }
+
+      if defined?(EY::Synchrony)
+        handler[Rack::Client::Handler::EmHttp] = EmHttpHelper::Sync
+      end
+
+      handler
     end
 
     def async_handler_context(handler, *middlewares, &block)
