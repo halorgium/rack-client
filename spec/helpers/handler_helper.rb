@@ -16,7 +16,7 @@ module HandlerHelper
           Rack::Client::Handler::Excon    => ExconHelper::Sync,
         }
 
-      if defined?(EY::Synchrony)
+      if defined?(EM::Synchrony)
         handler[Rack::Client::Handler::EmHttp] = EmHttpHelper::Sync
       end
 

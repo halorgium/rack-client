@@ -52,7 +52,7 @@ module Rack
 
           if request.body
             options[:body] = case request.body
-                             when Array     then request.body.to_s
+                             when Array     then request.body.join
                              when StringIO  then request.body.string
                              when IO        then request.body.read
                              when String    then request.body

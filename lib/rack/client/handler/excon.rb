@@ -16,7 +16,7 @@ module Rack
           body = case request.body
                  when StringIO then request.body.string
                  when IO       then request.body.read
-                 when Array    then request.body.to_s
+                 when Array    then request.body.join
                  when String   then request.body
                  end
 

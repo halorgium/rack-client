@@ -18,6 +18,7 @@ group :test do
     gem 'mongrel'
     gem 'cgi_multipart_eof_fix'
   else
+    gem 'ruby-debug19'
     gem 'em-synchrony'
   end
 end
