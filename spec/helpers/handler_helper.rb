@@ -50,7 +50,11 @@ module HandlerHelper
         subject { build_subject(*middlewares) }
 
         around do |group|
-          run_around(group) if respond_to?(:run_around)
+          if respond_to?(:run_around)
+            run_around(group)
+          else
+            group.call
+          end
         end
 
         instance_eval(&block)
