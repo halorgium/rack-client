@@ -26,6 +26,58 @@ shared_examples_for "Handler API" do
     end
   end
 
+  context 'POST request' do
+    it 'can accept a string post body' do
+      request  { post('/post/echo', {}, 'Hello, World!') }
+      response { body.should == 'Hello, World!' }
+    end
+
+    it 'can accept an IO post body' do
+      o,i = IO.pipe
+      i << 'Hello, World!'
+      i.close
+
+      request  { post('/post/echo', {}, o) }
+      response { body.should == 'Hello, World!' }
+    end
+
+    it 'can accept a body object that responds to each and yields strings' do
+      b = ['Hello, ', 'World!']
+
+      request  { post('/post/echo', {}, b) }
+      response { body.should == 'Hello, World!' }
+    end
+  end
+
+  context 'PUT request' do
+    it 'can accept a string post body' do
+      headers = { 'Content-Type' => 'application/x-www-form-urlencoded' }
+
+      request  { put('/put/sum', headers, 'a=1&b=2') }
+      response { body.should == '3' }
+    end
+
+    it 'can accept an IO post body' do
+      headers = { 'Content-Type' => 'application/x-www-form-urlencoded' }
+
+      o,i = IO.pipe
+      i << 'a=3&b=4'
+      i.close
+
+      request  { put('/put/sum', headers, o) }
+      response { body.should == '7' }
+    end
+
+    it 'can accept a body object that responds to each and yields strings' do
+      headers = { 'Content-Type' => 'application/x-www-form-urlencoded' }
+
+      b = ['a=5', '&', 'b=6']
+
+      request  { put('/put/sum', headers, b) }
+      response { body.should == '11' }
+    end
+  end
+
   context 'DELETE request' do
     it 'can handle a No Content response' do
       request   { delete('/delete/no-content') }

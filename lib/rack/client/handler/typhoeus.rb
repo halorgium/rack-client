@@ -66,9 +66,23 @@ module Rack
 
         def body_params_for(rack_request)
           unless %w[ HEAD GET ].include? rack_request.request_method
-            {:body => rack_request.body.string}
+            {:body => request_body(rack_request) }
           else
             {}
+          end
+        end
+
+        def request_body(rack_request)
+          input = rack_request.env['rack.input']
+
+          if input.respond_to?(:each)
+            body = []
+            input.each do |chunk|
+              body << chunk
+            end
+            body.join
+          else
+            body.to_s
           end
         end
       end

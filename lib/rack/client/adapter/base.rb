@@ -3,6 +3,8 @@ module Rack
     class Base
       extend Forwardable
 
+      ASCII_ENCODING = 'ASCII-8BIT'
+
       def_delegator :@app, :call
 
       def initialize(app)
@@ -43,13 +45,12 @@ module Rack
         env.update 'SCRIPT_NAME'  => ''
         env.update 'QUERY_STRING' => uri.query.to_s
 
-        input, errors = StringIO.new(body.to_s), StringIO.new
+        input  = body.respond_to?(:each) ? body : StringIO.new(body.to_s)
+        errors = StringIO.new
 
-        if input.respond_to?(:set_encoding)
-          input.set_encoding('ASCII-8BIT')
-          errors.set_encoding('ASCII-8BIT')
+        [ input, errors ].each do |io|
+          io.set_encoding(ASCII_ENCODING) if io.respond_to?(:set_encoding)
         end
-
 
         env.update 'rack.input'         => input
         env.update 'rack.errors'        => errors
