@@ -15,19 +15,26 @@ module Rack
         def sync_call(env)
           request = Rack::Request.new(env)
 
-          net_response = connection_for(request).request(net_request_for(request), body_for(request))
+          net_connection, net_request = net_connection_for(request), net_request_for(request)
+
+          if streaming_body?(request)
+            net_response = net_connection.request(net_request)
+          else
+            net_response = net_connection.request(net_request, body_for(request))
+          end
+
           parse(net_response).finish
         end
 
         def async_call(env)
           request = Rack::Request.new(env)
 
-          connection_for(request).request(net_request_for(request), body_for(request)) do |net_response|
+          net_connection_for(request).request(net_request_for(request), body_for(request)) do |net_response|
             yield parse_stream(net_response).finish
           end
         end
 
-        def connection_for(request)
+        def net_connection_for(request)
           connection = Net::HTTP.new(request.host, request.port)
 
           if request.scheme == 'https'
@@ -48,7 +55,11 @@ module Rack
                   when 'PUT'    then Net::HTTP::Put
                   end
 
-          klass.new(request.fullpath, Headers.from(request.env).to_http)
+          net_request = klass.new(request.fullpath, Headers.from(request.env).to_http)
+
+          net_request.body_stream = request.body if streaming_body?(request)
+
+          net_request
         end
 
         def body_for(request)
@@ -58,6 +69,18 @@ module Rack
           when Array    then request.body.join
           when String   then request.body
           end
+        end
+
+        def streaming_body?(request)
+          request.request_method == 'POST' &&
+            required_streaming_headers?(request) &&
+            request.body.is_a?(IO) &&
+            !request.body.is_a?(StringIO)
+        end
+
+        def required_streaming_headers?(request)
+          request.env.keys.include?('HTTP_CONTENT_LENGTH') ||
+            request.env['HTTP_TRANSFER_ENCODING'] == 'chunked'
         end
 
         def parse(net_response)
