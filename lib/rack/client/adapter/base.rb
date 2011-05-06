@@ -45,7 +45,7 @@ module Rack
         env.update 'SCRIPT_NAME'  => ''
         env.update 'QUERY_STRING' => uri.query.to_s
 
-        input  = body.respond_to?(:each) ? body : StringIO.new(body.to_s)
+        input  = ensure_acceptable_input(body)
         errors = StringIO.new
 
         [ input, errors ].each do |io|
@@ -63,6 +63,16 @@ module Rack
         env.update 'HTTPS'  => env["rack.url_scheme"] == "https" ? "on" : "off"
 
         env
+      end
+
+      def ensure_acceptable_input(body)
+        if body.respond_to?(:rewind)
+          body
+        elsif Array === body
+          StringIO.new(body.join)
+        else
+          StringIO.new(body.to_s)
+        end
       end
     end
   end
