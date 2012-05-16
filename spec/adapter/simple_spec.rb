@@ -56,6 +56,11 @@ describe Rack::Client::Simple do
       client = Rack::Client::Simple.new(app, 'http://example.org/')
       client.get('http://example.com/bar').body.should == 'http://example.com/bar'
     end
+
+    it 'should accept a URI as the url' do
+      client = Rack::Client::Simple.new(app, 'http://example.org/')
+      client.get(URI('http://example.com/bar')).body.should == 'http://example.com/bar'
+    end
   end
 
   describe '.use' do
