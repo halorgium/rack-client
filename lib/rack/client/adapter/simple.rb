@@ -86,7 +86,7 @@ module Rack
       def request_tuple(url, headers = {}, body_or_params = nil, query_params = {}, &block)
         query_hash = Hash === query_params ? query_params : Utils.build_query(query_params)
 
-        uri = URI.parse(url)
+        uri = url.is_a?(URI) ? url : URI.parse(url)
 
         unless query_params.empty?
           uri.query = Utils.build_nested_query(Utils.parse_nested_query(uri.query).merge(query_params))
