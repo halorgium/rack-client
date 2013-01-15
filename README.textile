@@ -21,7 +21,7 @@ things.
 
 <pre>
 response = Rack::Client.get("http://some-website.com/blah.txt")
-response.code #=> 200
+response.status #=> 200
 response.body #=> "some body"
 </pre>
 
