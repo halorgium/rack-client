@@ -2,6 +2,9 @@ source "http://rubygems.org"
 
 gemspec
 
+ruby_version = Gem::Version.new(RUBY_VERSION.dup)
+ruby_19      = Gem::Version.new('1.9')
+
 group :optional do
   gem 'rack-cache', :require => 'rack/cache'
   gem 'rack-contrib', :require => 'rack/contrib'
@@ -13,12 +16,12 @@ group :test do
   gem 'rspec',    '>=2.0.0'
   gem 'realweb'
 
-  unless RUBY_VERSION > '1.9.2'
+  if ruby_version >= ruby_19
+    gem 'debugger'
+    gem 'em-synchrony'
+  else
     gem 'ruby-debug'
     gem 'mongrel'
     gem 'cgi_multipart_eof_fix'
-  else
-    gem 'ruby-debug19'
-    gem 'em-synchrony'
   end
 end
