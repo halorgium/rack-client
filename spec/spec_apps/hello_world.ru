@@ -1,1 +1,1 @@
-run lambda {|_| [200, {}, 'Hello World!'] }
+run lambda {|_| [200, {}, ['Hello World!']] }
