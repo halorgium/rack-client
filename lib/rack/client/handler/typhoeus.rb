@@ -45,7 +45,7 @@ module Rack
         end
 
         def process(rack_request)
-          ::Typhoeus::Request.run((url_for(rack_request)).to_s, params_for(rack_request))
+          ::Typhoeus::Request.new((url_for(rack_request)).to_s, params_for(rack_request)).run
         end
 
         def url_for(rack_request)
