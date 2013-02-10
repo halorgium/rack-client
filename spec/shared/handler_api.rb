@@ -6,14 +6,6 @@ shared_examples_for "Handler API" do
       response  { status.should == 200 }
     end
 
-    it "handles multiple cookies according to Rack Specification" do
-      request  { get('/cookie') }
-      response do
-        raw_status, raw_headers, raw_body = Cookie.new.call({"rack.input" => StringIO.new, "PATH_INFO"=>"", "REQUEST_METHOD"=>"GET"})
-        headers["Set-Cookie"].should == raw_headers["Set-Cookie"]
-      end
-    end
-
     it 'has the correct headers' do
       request  { get('/get/hello_world') }
       response do

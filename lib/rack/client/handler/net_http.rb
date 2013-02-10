@@ -95,8 +95,8 @@ module Rack
         def parse_headers(net_response)
           headers = Headers.new
 
-          net_response.to_hash.each do |k,v|
-            headers.update(k => v.join("\n"))
+          net_response.each do |k,v|
+            headers.update(k => v)
           end
 
           headers.to_http
