@@ -34,7 +34,7 @@ module Rack
 
         def_delegators :response, :[], :[]=, :close, :delete_cookie, :each,
                                   :empty?, :finish, :headers, :redirect,
-                                  :set_cookie, :status, :to_a, :write
+                                  :set_cookie, :status, :to_a, :to_ary, :write
         def_delegator  :response, :body, :chunked_body
 
         def initialize(*tuple)
