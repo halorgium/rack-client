@@ -8,6 +8,10 @@ dir = File.expand_path(File.dirname(__FILE__))
 Dir["#{dir}/shared/*.rb"].each {|shared| require shared }
 Dir["#{dir}/helpers/*.rb"].each {|helper| require helper }
 
+def mri_187?
+  RUBY_VERSION == '1.8.7' && !defined?(RUBY_ENGINE)
+end
+
 RSpec.configure do |config|
   config.color_enabled = true
   #config.filter_run :focused => true
