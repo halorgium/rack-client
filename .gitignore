@@ -2,3 +2,4 @@ pkg
 bin
 .bundle
 *.rbc
+Gemfile.lock
