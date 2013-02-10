@@ -19,7 +19,7 @@ module Rack
       end
 
       def to_http
-        self.inject({}) {|h,(header,value)| h.update(clean(header) => value) }
+        self.inject({}) {|h,(header,value)| h.update(clean(header) => Array(value).join("\n")) }
       end
 
       def to_env

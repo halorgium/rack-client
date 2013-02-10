@@ -30,7 +30,11 @@ module Rack
 
         def parse(excon_response)
           body = excon_response.body.empty? ? [] : StringIO.new(excon_response.body)
-          Response.new(excon_response.status, Headers.new(excon_response.headers).to_http, body)
+          headers = {}
+          excon_response.headers.map do |key,value|
+            headers[key] = value.split(", ")
+          end
+          Response.new(excon_response.status, Headers.new(headers).to_http, body)
         end
 
         def connection_for(request)
