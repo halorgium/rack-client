@@ -13,7 +13,7 @@ group :test do
   gem 'rspec',    '>=2.0.0'
   gem 'realweb'
 
-  unless RUBY_VERSION == '1.9.2'
+  unless RUBY_VERSION > '1.9.2'
     gem 'ruby-debug'
     gem 'mongrel'
     gem 'cgi_multipart_eof_fix'
