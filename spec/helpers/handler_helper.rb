@@ -2,11 +2,16 @@ module HandlerHelper
   module Ext
 
     def async_handler_map
-      {
-        Rack::Client::Handler::EmHttp   => EmHttpHelper::Async,
+      handler = {
         Rack::Client::Handler::NetHTTP  => NetHTTPHelper::Async,
         Rack::Client::Handler::Typhoeus => TyphoeusHelper::Async,
       }
+
+      unless mri_187?
+        handler[Rack::Client::Handler::EmHttp] = EmHttpHelper::Async
+      end
+
+      handler
     end
 
     def sync_handler_map
