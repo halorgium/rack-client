@@ -1,10 +1,9 @@
 source "http://rubygems.org"
-
 gemspec
 
 ruby_version = Gem::Version.new(RUBY_VERSION.dup)
 ruby_19      = Gem::Version.new('1.9')
-ruby_engine  = RUBY_ENGINE if defined?(RUBY_ENGINE)
+ruby_20      = Gem::Version.new('2.0')
 
 group :optional do
   gem 'rack-cache', :require => 'rack/cache'
@@ -17,9 +16,10 @@ group :test do
   gem 'rspec',    '>=2.0.0'
   gem 'realweb'
 
-  if ruby_version >= ruby_19
-    gem 'debugger' if ruby_engine == 'ruby' # MRI
-
+  if ruby_version >= ruby_20
+    gem 'em-synchrony'
+  elsif ruby_version >= ruby_19
+    gem 'debugger' if RUBY_ENGINE == 'ruby'
     gem 'em-synchrony'
   else
     gem 'ruby-debug'
