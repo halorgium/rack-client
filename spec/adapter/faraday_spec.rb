@@ -108,4 +108,16 @@ describe Faraday::Adapter::RackClient do
     specify { conn.run_request(:options, 'echo', nil, {}).body.should == 'options' }
 
   end
+
+  describe 'HEAD' do
+
+    it 'retrieves no response body' do
+      conn.head('echo').body.should == ''
+    end
+
+    it 'retrieves the response headers' do
+      conn.head('echo').headers['content-type'].should =~ %r{text/plain}
+    end
+
+  end
 end
