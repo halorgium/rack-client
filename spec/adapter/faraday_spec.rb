@@ -102,4 +102,10 @@ describe Faraday::Adapter::RackClient do
     end
 
   end
+
+  describe 'OPTIONS' do
+
+    specify { conn.run_request(:options, 'echo', nil, {}).body.should == 'options' }
+
+  end
 end
