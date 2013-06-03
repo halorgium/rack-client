@@ -46,5 +46,35 @@ describe Faraday::Adapter::RackClient do
       response.body.should == %(get {"bodyrock"=>"true"})
     end
 
+    it 'sends user agent' do
+      response = conn.get('echo_header', {:name => 'user-agent'}, :user_agent => 'Agent Faraday')
+      response.body.should == 'Agent Faraday'
+    end
+
+  end
+
+  describe 'POST' do
+
+    it 'send url encoded params' do
+      conn.post('echo', :name => 'zack').body.should == %(post {"name"=>"zack"})
+    end
+
+    it 'send url encoded nested params' do
+      response = conn.post('echo', 'name' => {'first' => 'zack'})
+      response.body.should == %(post {"name"=>{"first"=>"zack"}})
+    end
+
+    it 'retrieves the response headers' do
+      conn.post('echo').headers['content-type'].should =~ %r{text/plain}
+    end
+
+    it 'sends files' do
+      response = conn.post('file') do |req|
+        req.body = {'uploaded_file' => Faraday::UploadIO.new(__FILE__, 'text/x-ruby')}
+      end
+
+      response.body.should == 'file faraday_spec.rb text/x-ruby'
+    end
+
   end
 end
