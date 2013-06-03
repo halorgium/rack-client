@@ -120,4 +120,16 @@ describe Faraday::Adapter::RackClient do
     end
 
   end
+
+  describe 'DELETE' do
+
+    it 'retrieves the response headers' do
+      conn.delete('echo').headers['content-type'].should =~ %r{text/plain}
+    end
+
+    it 'retrieves the body' do
+      conn.delete('echo').body.should == %(delete)
+    end
+
+  end
 end
