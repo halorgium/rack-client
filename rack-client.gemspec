@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'em-http-request'
   s.add_development_dependency 'typhoeus'
   s.add_development_dependency 'json'
+  s.add_development_dependency 'faraday', '>= 0.9.0.rc1'
 end
