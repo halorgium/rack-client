@@ -94,4 +94,12 @@ describe Faraday::Adapter::RackClient do
     end
 
   end
+
+  describe 'PATCH' do
+
+    it 'send url encoded params' do
+      conn.patch('echo', :name => 'zack').body.should == %(patch {"name"=>"zack"})
+    end
+
+  end
 end
