@@ -3,7 +3,7 @@ require 'rack/client/adapter/faraday'
 
 describe Faraday::Adapter::RackClient do
 
-  let(:url) { URI.join(@base_url, '/faraday') }
+  let(:url) { @base_url }
 
   let(:conn) do
     Faraday.new(:url => url) do |faraday|
@@ -12,7 +12,7 @@ describe Faraday::Adapter::RackClient do
 
       faraday.adapter(:rack_client) do |builder|
         builder.use Rack::Lint
-        builder.run Rack::Client::Handler::NetHTTP.new
+        builder.run LiveServer
       end
     end
   end
@@ -39,8 +39,6 @@ describe Faraday::Adapter::RackClient do
     end
 
     it 'with body' do
-      pending "Faraday tests a GET request with a POST body, which rack-client forbids."
-
       response = conn.get('echo') do |req|
         req.body = {'bodyrock' => true}
       end
