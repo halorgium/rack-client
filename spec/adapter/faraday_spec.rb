@@ -77,4 +77,21 @@ describe Faraday::Adapter::RackClient do
     end
 
   end
+
+  describe 'PUT' do
+
+    it 'send url encoded params' do
+      conn.put('echo', :name => 'zack').body.should == %(put {"name"=>"zack"})
+    end
+
+    it 'send url encoded nested params' do
+      response = conn.put('echo', 'name' => {'first' => 'zack'})
+      response.body.should == %(put {"name"=>{"first"=>"zack"}})
+    end
+
+    it 'retrieves the response headers' do
+      conn.put('echo').headers['content-type'].should =~ %r{text/plain}
+    end
+
+  end
 end
