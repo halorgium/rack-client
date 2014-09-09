@@ -11,7 +11,7 @@ module Rack
         @app = app
       end
 
-      %w[ options get head post put delete trace connect ].each do |method|
+      %w[ options get head post put patch delete trace connect ].each do |method|
         eval <<-RUBY, binding, __FILE__, __LINE__ + 1
           def #{method}(url, headers = {}, body = nil, &block)
             request('#{method.upcase}', url, headers, body, &block)

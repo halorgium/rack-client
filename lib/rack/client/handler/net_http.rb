@@ -48,11 +48,12 @@ module Rack
 
         def net_request_for(request)
           klass = case request.request_method
-                  when 'DELETE' then Net::HTTP::Delete
-                  when 'GET'    then Net::HTTP::Get
-                  when 'HEAD'   then Net::HTTP::Head
-                  when 'POST'   then Net::HTTP::Post
-                  when 'PUT'    then Net::HTTP::Put
+                  when 'DELETE'  then Net::HTTP::Delete
+                  when 'GET'     then Net::HTTP::Get
+                  when 'HEAD'    then Net::HTTP::Head
+                  when 'POST'    then Net::HTTP::Post
+                  when 'PUT'     then Net::HTTP::Put
+                  when 'PATCH'   then Net::HTTP::Patch
                   end
 
           net_request = klass.new(request.fullpath, Headers.from(request.env).to_http)

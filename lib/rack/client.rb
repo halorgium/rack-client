@@ -9,7 +9,7 @@ module Rack
 
     class << self
       extend Forwardable
-      def_delegators :new, :head, :get, :put, :post, :delete
+      def_delegators :new, :head, :get, :put, :patch, :post, :delete
     end
 
     def self.new(*a, &block)

@@ -66,7 +66,7 @@ module Rack
         RUBY
       end
 
-      %w[ post put ].each do |method|
+      %w[ post put patch ].each do |method|
         eval <<-RUBY, binding, __FILE__, __LINE__ + 1
           def #{method}(url, headers = {}, body_or_params = nil, query_params = {}, &block)
             request('#{method.upcase}', url, headers, body_or_params, query_params, &block)
