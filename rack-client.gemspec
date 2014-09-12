@@ -20,4 +20,12 @@ Gem::Specification.new do |s|
   s.add_development_dependency('json')
   s.add_development_dependency('rspec', '~> 2.99.0')
   s.add_development_dependency('typhoeus')
+
+  if RUBY_VERSION >= '1.9'
+    s.add_development_dependency('em-synchrony', '~> 1.0.3')
+  elsif RUBY_VERSION < '1.9'
+    s.add_development_dependency('mongrel', '~> 1.1.5')
+    s.add_development_dependency('ruby-debug', '~> 0.10.4')
+    s.add_development_dependency('cgi_multipart_eof_fix', '~> 2.5.0')
+  end
 end
