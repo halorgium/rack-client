@@ -8,7 +8,7 @@ shared_examples_for "Streamed Response API" do
     response_body = %w[ this is a stream ]
     request   { get('/stream') }
     response do
-      each {|part| part.should == response_body.shift }
+      each {|part| expect(part).to eq(response_body.shift) }
     end
   end
 end

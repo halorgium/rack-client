@@ -5,9 +5,9 @@ describe Rack::Client::Response do
     it 'follows the rack tuple convention for parameters' do
       response = Rack::Client::Response.new(200, {'X-Foo' => 'Bar'}, ['Hello World!'])
 
-      response.status.should == 200
-      response.headers['X-Foo'].should == 'Bar'
-      response.body.should == ['Hello World!']
+      expect(response.status).to eq(200)
+      expect(response.headers['X-Foo']).to eq('Bar')
+      expect(response.body).to eq(['Hello World!'])
     end
 
     it 'accepts a callback for streamed responses' do
@@ -17,10 +17,10 @@ describe Rack::Client::Response do
       response = Rack::Client::Response.new(200) {|block| body.each(&block) }
 
       response.each do |part|
-        part.should == check.shift
+        expect(part).to eq(check.shift)
       end
 
-      check.should be_empty
+      expect(check).to be_empty
     end
   end
 
@@ -33,7 +33,7 @@ describe Rack::Client::Response do
 
       response.each {|chunk| }
 
-      response.instance_variable_get(:@body).should == check
+      expect(response.instance_variable_get(:@body)).to eq(check)
     end
 
     it 'will yield the existing body before the streamed body' do
@@ -43,10 +43,10 @@ describe Rack::Client::Response do
       response = Rack::Client::Response.new(200, {}, existing) {|block| streamed.each(&block) }
 
       response.each do |part|
-        part.should == check.shift
+        expect(part).to eq(check.shift)
       end
 
-      check.should be_empty
+      expect(check).to be_empty
     end
 
     it 'is idempotent' do
@@ -57,11 +57,11 @@ describe Rack::Client::Response do
 
       response.each {|chunk| }
 
-      response.instance_variable_get(:@body).should == check
+      expect(response.instance_variable_get(:@body)).to eq(check)
 
       response.each {|chunk| }
 
-      response.instance_variable_get(:@body).should == check
+      expect(response.instance_variable_get(:@body)).to eq(check)
     end
   end
 
@@ -72,7 +72,7 @@ describe Rack::Client::Response do
 
       response = Rack::Client::Response.new(200) {|block| body.each(&block) }
 
-      response.body.should == check
+      expect(response.body).to eq(check)
     end
   end
 end

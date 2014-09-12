@@ -20,22 +20,22 @@ describe Faraday::Adapter::RackClient do
   describe 'GET' do
 
     it 'retrieves the response body' do
-      conn.get('echo').body.should == 'get'
+      expect(conn.get('echo').body).to eq('get')
     end
 
     it 'send url encoded params' do
-      conn.get('echo', :name => 'zack').body.should == %(get ?{"name"=>"zack"})
+      expect(conn.get('echo', :name => 'zack').body).to eq(%(get ?{"name"=>"zack"}))
     end
 
     it 'retrieves the response headers' do
       response = conn.get('echo')
 
-      response.headers['Content-Type'].should =~ %r{text/plain}
-      response.headers['content-type'].should =~ %r{text/plain}
+      expect(response.headers['Content-Type']).to match(%r{text/plain})
+      expect(response.headers['content-type']).to match(%r{text/plain})
     end
 
     it 'handles headers with multiple values' do
-      conn.get('multi').headers['set-cookie'].should == 'one, two'
+      expect(conn.get('multi').headers['set-cookie']).to eq('one, two')
     end
 
     it 'with body' do
@@ -43,12 +43,12 @@ describe Faraday::Adapter::RackClient do
         req.body = {'bodyrock' => true}
       end
 
-      response.body.should == %(get {"bodyrock"=>"true"})
+      expect(response.body).to eq(%(get {"bodyrock"=>"true"}))
     end
 
     it 'sends user agent' do
       response = conn.get('echo_header', {:name => 'user-agent'}, :user_agent => 'Agent Faraday')
-      response.body.should == 'Agent Faraday'
+      expect(response.body).to eq('Agent Faraday')
     end
 
   end
@@ -56,16 +56,16 @@ describe Faraday::Adapter::RackClient do
   describe 'POST' do
 
     it 'send url encoded params' do
-      conn.post('echo', :name => 'zack').body.should == %(post {"name"=>"zack"})
+      expect(conn.post('echo', :name => 'zack').body).to eq(%(post {"name"=>"zack"}))
     end
 
     it 'send url encoded nested params' do
       response = conn.post('echo', 'name' => {'first' => 'zack'})
-      response.body.should == %(post {"name"=>{"first"=>"zack"}})
+      expect(response.body).to eq(%(post {"name"=>{"first"=>"zack"}}))
     end
 
     it 'retrieves the response headers' do
-      conn.post('echo').headers['content-type'].should =~ %r{text/plain}
+      expect(conn.post('echo').headers['content-type']).to match(%r{text/plain})
     end
 
     it 'sends files' do
@@ -73,7 +73,7 @@ describe Faraday::Adapter::RackClient do
         req.body = {'uploaded_file' => Faraday::UploadIO.new(__FILE__, 'text/x-ruby')}
       end
 
-      response.body.should == 'file faraday_spec.rb text/x-ruby'
+      expect(response.body).to eq('file faraday_spec.rb text/x-ruby')
     end
 
   end
@@ -81,16 +81,16 @@ describe Faraday::Adapter::RackClient do
   describe 'PUT' do
 
     it 'send url encoded params' do
-      conn.put('echo', :name => 'zack').body.should == %(put {"name"=>"zack"})
+      expect(conn.put('echo', :name => 'zack').body).to eq(%(put {"name"=>"zack"}))
     end
 
     it 'send url encoded nested params' do
       response = conn.put('echo', 'name' => {'first' => 'zack'})
-      response.body.should == %(put {"name"=>{"first"=>"zack"}})
+      expect(response.body).to eq(%(put {"name"=>{"first"=>"zack"}}))
     end
 
     it 'retrieves the response headers' do
-      conn.put('echo').headers['content-type'].should =~ %r{text/plain}
+      expect(conn.put('echo').headers['content-type']).to match(%r{text/plain})
     end
 
   end
@@ -98,25 +98,25 @@ describe Faraday::Adapter::RackClient do
   describe 'PATCH' do
 
     it 'send url encoded params' do
-      conn.patch('echo', :name => 'zack').body.should == %(patch {"name"=>"zack"})
+      expect(conn.patch('echo', :name => 'zack').body).to eq(%(patch {"name"=>"zack"}))
     end
 
   end
 
   describe 'OPTIONS' do
 
-    specify { conn.run_request(:options, 'echo', nil, {}).body.should == 'options' }
+    specify { expect(conn.run_request(:options, 'echo', nil, {}).body).to eq('options') }
 
   end
 
   describe 'HEAD' do
 
     it 'retrieves no response body' do
-      conn.head('echo').body.should == ''
+      expect(conn.head('echo').body).to eq('')
     end
 
     it 'retrieves the response headers' do
-      conn.head('echo').headers['content-type'].should =~ %r{text/plain}
+      expect(conn.head('echo').headers['content-type']).to match(%r{text/plain})
     end
 
   end
@@ -124,11 +124,11 @@ describe Faraday::Adapter::RackClient do
   describe 'DELETE' do
 
     it 'retrieves the response headers' do
-      conn.delete('echo').headers['content-type'].should =~ %r{text/plain}
+      expect(conn.delete('echo').headers['content-type']).to match(%r{text/plain})
     end
 
     it 'retrieves the body' do
-      conn.delete('echo').body.should == %(delete)
+      expect(conn.delete('echo').body).to eq(%(delete))
     end
 
   end
