@@ -17,9 +17,12 @@ Gem::Specification.new do |s|
   s.add_development_dependency('excon')
   s.add_development_dependency('em-http-request')
   s.add_development_dependency('faraday', '>= 0.9.0.rc1')
-  s.add_development_dependency('json')
+  s.add_development_dependency('json', '~> 1.8.1')
+  s.add_development_dependency('realweb')
   s.add_development_dependency('rspec', '~> 2.99.0')
+  s.add_development_dependency('sinatra', '~> 1.4.5')
   s.add_development_dependency('typhoeus')
+
 
   if RUBY_VERSION >= '1.9'
     s.add_development_dependency('em-synchrony', '~> 1.0.3')

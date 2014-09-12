@@ -1,7 +1,7 @@
 $:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
-require 'rack/client'
 
-Bundler.require(:test)
+require 'rack/client'
+require 'realweb'
 
 dir = File.expand_path(File.dirname(__FILE__))
 
