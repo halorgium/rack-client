@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency('excon', '~> 0.39.5')
   s.add_development_dependency('em-http-request', '~> 1.1.2')
-  s.add_development_dependency('faraday', '~> 0.9.0')
+  s.add_development_dependency('faraday', '0.9.0.rc1')
   s.add_development_dependency('json', '~> 1.8.1')
   s.add_development_dependency('realweb', '~> 1.0.1')
   s.add_development_dependency('rspec', '~> 2.99.0')
