@@ -13,7 +13,7 @@ end
 group :test do
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
-  gem 'rspec',    '>=2.0.0'
+  gem 'rspec', '~> 2.99.0'
   gem 'realweb'
 
   if ruby_version >= ruby_20
