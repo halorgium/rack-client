@@ -12,16 +12,16 @@ Gem::Specification.new do |s|
   s.description = s.summary
   s.files       = %w[History.txt LICENSE README.textile Rakefile] + Dir["lib/**/*.rb"] + Dir["demo/**/*.rb"]
 
-  s.add_dependency('rack', '>=1.0.0')
+  s.add_dependency('rack', '>= 1.0.0')
 
-  s.add_development_dependency('excon')
-  s.add_development_dependency('em-http-request')
-  s.add_development_dependency('faraday', '>= 0.9.0.rc1')
+  s.add_development_dependency('excon', '~> 0.39.5')
+  s.add_development_dependency('em-http-request', '~> 1.1.2')
+  s.add_development_dependency('faraday', '~> 0.9.0')
   s.add_development_dependency('json', '~> 1.8.1')
-  s.add_development_dependency('realweb')
+  s.add_development_dependency('realweb', '~> 1.0.1')
   s.add_development_dependency('rspec', '~> 2.99.0')
   s.add_development_dependency('sinatra', '~> 1.4.5')
-  s.add_development_dependency('typhoeus')
+  s.add_development_dependency('typhoeus', '~> 0.6.9')
 
 
   if RUBY_VERSION >= '1.9'
