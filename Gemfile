@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 gemspec
 
 ruby_version = Gem::Version.new(RUBY_VERSION.dup)
@@ -13,7 +13,6 @@ end
 group :test do
   gem 'rake'
   gem 'sinatra', :require => 'sinatra/base'
-  gem 'rspec', '~> 2.99.0'
   gem 'realweb'
 
   if ruby_version >= ruby_20
