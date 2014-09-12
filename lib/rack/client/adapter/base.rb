@@ -23,7 +23,8 @@ module Rack
         if block_given?
           call(build_env(method.upcase, url, headers, body)) {|tuple| yield *tuple }
         else
-          return *call(build_env(method.upcase, url, headers, body))
+          env = build_env(method.upcase, url, headers, body)
+          return *call(env)
         end
       end
 
