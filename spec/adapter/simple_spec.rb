@@ -7,7 +7,7 @@ describe Rack::Client::Simple do
 
     it 'will be rackified (e.g. HTTP_*)' do
       client = Rack::Client::Simple.new(app)
-      client.get('/', 'X-Foo' => 'bar').body.should == 'bar'
+      expect(client.get('/', 'X-Foo' => 'bar').body).to eq('bar')
     end
   end
 
@@ -16,12 +16,12 @@ describe Rack::Client::Simple do
 
     it 'adds the user agent header to requests' do
       client = Rack::Client::Simple.new(app)
-      client.get('/hitme').body.should == "rack-client #{Rack::Client::VERSION} (app: Proc)"
+      expect(client.get('/hitme').body).to eq("rack-client #{Rack::Client::VERSION} (app: Proc)")
     end
 
     it 'can be overridden' do
       client = Rack::Client::Simple.new(app)
-      client.get('/foo', 'User-Agent' => 'IE6').body.should == 'IE6'
+      expect(client.get('/foo', 'User-Agent' => 'IE6').body).to eq('IE6')
     end
   end
 
@@ -30,17 +30,17 @@ describe Rack::Client::Simple do
 
     it 'adds the host as the hostname of REQUEST_URI' do
       client = Rack::Client::Simple.new(app, 'http://example.org/')
-      client.get('/foo').body.should == 'example.org'
+      expect(client.get('/foo').body).to eq('example.org')
     end
 
     it 'adds the host and port for explicit ports in the REQUEST_URI' do
       client = Rack::Client::Simple.new(app, 'http://example.org:81/')
-      client.get('/foo').body.should == 'example.org:81'
+      expect(client.get('/foo').body).to eq('example.org:81')
     end
 
     it 'can be overridden' do
       client = Rack::Client::Simple.new(app, 'http://example.org/')
-      client.get('/foo', 'Host' => '127.0.0.1').body.should == '127.0.0.1'
+      expect(client.get('/foo', 'Host' => '127.0.0.1').body).to eq('127.0.0.1')
     end
   end
 
@@ -49,17 +49,17 @@ describe Rack::Client::Simple do
 
     it 'uses the base uri if the url is relative' do
       client = Rack::Client::Simple.new(app, 'http://example.org/')
-      client.get('/foo').body.should == 'http://example.org/foo'
+      expect(client.get('/foo').body).to eq('http://example.org/foo')
     end
 
     it 'does not use the base uri if the url is absolute' do
       client = Rack::Client::Simple.new(app, 'http://example.org/')
-      client.get('http://example.com/bar').body.should == 'http://example.com/bar'
+      expect(client.get('http://example.com/bar').body).to eq('http://example.com/bar')
     end
 
     it 'should accept a URI as the url' do
       client = Rack::Client::Simple.new(app, 'http://example.org/')
-      client.get(URI('http://example.com/bar')).body.should == 'http://example.com/bar'
+      expect(client.get(URI('http://example.com/bar')).body).to eq('http://example.com/bar')
     end
   end
 
@@ -76,7 +76,7 @@ describe Rack::Client::Simple do
       end
 
       client = klass.new(lambda {|_| [500, {}, ['FAIL']] })
-      client.get('/').body.should == 'Hello Middleware!'
+      expect(client.get('/').body).to eq('Hello Middleware!')
     end
   end
 end
