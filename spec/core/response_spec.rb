@@ -74,5 +74,15 @@ describe Rack::Client::Response do
 
       response.body.should == check
     end
+
+    it 'will close body after loading' do
+      body = Rack::BodyProxy.new(%w[ Should get closed ]) { }
+
+      response = Rack::Client::Response.new(200, {}, body)
+
+      response.body
+
+      body.should be_closed
+    end
   end
 end

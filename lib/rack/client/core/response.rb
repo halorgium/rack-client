@@ -34,6 +34,8 @@ module Rack
           end
         end
 
+        @body.close if @body.respond_to?(:close)
+
         if @stream
           @stream.call(lambda do |chunk|
             unless chunk.empty?
